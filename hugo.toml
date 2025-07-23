@@ -18,11 +18,11 @@ title = "#!/bin/note"
 description = "個人安全研究與 CTF writeups"
 keywords = [
     "cybersecurity",
-    "penetration testing", 
+    "penetration testing",
     "CTF",
     "writeups",
     "infosec",
-    "security research"
+    "security research",
 ]
 author = "Your Name"
 DateFormat = "January 2, 2006"
@@ -42,8 +42,8 @@ disableScrollToTop = false
 comments = false
 hidemeta = false
 hideSummary = false
-showtoc = false
-tocopen = false
+showtoc = true
+tocopen = true
 
 [params.assets]
 favicon = "/favicon.ico"
@@ -110,6 +110,9 @@ name = "About"
 url = "/about/"
 weight = 50
 
+[permalinks]
+posts = "/posts/:year/:month/:title/"
+
 [markup]
 [markup.goldmark]
 [markup.goldmark.renderer]
@@ -121,3 +124,8 @@ codeFences = true
 guessSyntax = true
 lineNos = true
 style = "github"
+
+[markup.tableOfContents]
+startLevel = 2
+endLevel = 4
+ordered = false

@@ -1,16 +1,19 @@
 ---
 title: "picoCTF 2021 reverse write-up"
-date:  2024-01-30
+date: 2024-01-30
 categories: [CTF]
-tags:       [picoCTF2021]
+tags: [picoCTF2021]
+ShowToc: true
+TocOpen: false
 ---
-``` line-numbers
+
+```javascript
 ''.join([chr((ord(flag[i]) << 8) + ord(flag[i + 1])) for i in range(0, len(flag), 2)])
 ```
 
 寫一個程式把它解密
 
-``` line-numbers
+```javascript
 encode_flag = open("enc").read()
 flag = ""
 for i in range(0, len(encode_flag)):
@@ -23,20 +26,21 @@ print(flag)
 
 `Flag: picoCTF{16_bits_inst34d_of_8_26684c20}`
 
-# keygenme-py \[30 points\]
+## keygenme-py \[30 points\]
 
-從source code中看到已經有一部分flag，看起來是要找出 key_part_dynamic1_trial
+從 source code 中看到已經有一部分 flag，看起來是要找出 key_part_dynamic1_trial
 
-``` line-numbers
-key_part_static1_trial = "picoCTF{1n_7h3_|<3y_of_"
-key_part_dynamic1_trial = "xxxxxxxx"
-key_part_static2_trial = "}"
-key_full_template_trial = key_part_static1_trial + key_part_dynamic1_trial + key_part_static2_trial
+```javascript
+key_part_static1_trial = "picoCTF{1n_7h3_|<3y_of_";
+key_part_dynamic1_trial = "xxxxxxxx";
+key_part_static2_trial = "}";
+key_full_template_trial =
+  key_part_static1_trial + key_part_dynamic1_trial + key_part_static2_trial;
 ```
 
-把username拿去sha256後取4,5,3,6,2,7,1,8
+把 username 拿去 sha256 後取 4,5,3,6,2,7,1,8
 
-``` line-numbers
+```javascript
 import hashlib
 flag_part1 = "picoCTF{1n_7h3_|<3y_of_"
 flag_part2 = "".join([hashlib.sha256(b"GOUGH").hexdigest()[x] for x in [4,5,3,6,2,7,1,8]])
@@ -47,11 +51,11 @@ print(flag)
 
 `Flag: picoCTF{1n_7h3_|<3y_of_f911a486}`
 
-# crackme-py \[30 points\]
+## crackme-py \[30 points\]
 
-這題看完source code後發現他已經有寫好的function只是沒有使用
+這題看完 source code 後發現他已經有寫好的 function 只是沒有使用
 
-``` line-numbers
+```python
 def decode_secret(secret):
     """ROT47 decode
 
@@ -73,7 +77,7 @@ def decode_secret(secret):
     print(decoded)
 ```
 
-``` line-numbers
+```line-numbers
 ┌──(luyee㉿DESKTOP-KADOGNG)-[~/picoCTF]
 └─$ /bin/python3 /home/luyee/picoCTF/2021/reverse/crackme-py/crackme.py
 What's your first number? 123
@@ -82,15 +86,15 @@ The number with largest positive magnitude is 123
 picoCTF{1|\/|_4_p34|\|ut_4593da8a}
 ```
 
-所以直接拿來用，Flag就出來了＠＠
+所以直接拿來用，Flag 就出來了＠＠
 
 `Flag: picoCTF{1|\/|_4_p34|\|ut_4593da8a}`
 
-# ARMssembly 0 \[40 points\]
+## ARMssembly 0 \[40 points\]
 
-這題就是看ASM發現在比大小，傳入兩個參數後，回傳最大者，故如果`182476535`和`3742084308`，會回傳`3742084308`
+這題就是看 ASM 發現在比大小，傳入兩個參數後，回傳最大者，故如果`182476535`和`3742084308`，會回傳`3742084308`
 
-``` line-numbers
+```shell
 func1:
     sub sp, sp, #16
     str w0, [sp, 12]
@@ -103,45 +107,42 @@ func1:
     b   .L3
 ```
 
-把`3742084308`轉成hex去除0x就得到flag了
+把`3742084308`轉成 hex 去除 0x 就得到 flag 了
 
-``` line-numbers
+```python
 flag = hex(3742084308)
 print('picoCTF{'+flag[2::]+'}')
 ```
 
 `Flag: picoCTF{df0bacd4}`
 
-# speeds and feeds \[50 points\]
+## speeds and feeds \[50 points\]
 
-nc過去後發現印出類似座標的東西，先把他存起來
+nc 過去後發現印出類似座標的東西，先把他存起來
 
-``` line-numbers
+```line-numbers
 nc mercury.picoctf.net 59953 > flag.txt
 ```
 
-google了一下發現這東西是Gcode -\> CNC在使用的
+google 了一下發現這東西是 Gcode -\> CNC 在使用的
 
-把他丟到這網站就跑出flag了  
-  
+把他丟到這網站就跑出 flag 了
+
 `Flag: picoCTF{num3r1ca1_cOntrO1_f3fea95b}`
 
-# Shop \[50 points\]
+## Shop \[50 points\]
 
-丟到IDA分析，從main開始追  
+丟到 IDA 分析，從 main 開始追
 
+接著看到 main_openShop，可以看到 monery = main_menu 的返回值，所以繼續追到 main_menu
 
-接著看到main_openShop，可以看到monery = main_menu的返回值，所以繼續追到main_menu  
+到 main_menu 看到 v15 = wallet - \*num \* 選擇價格，是值運算，代表可以輸入負數讓錢越來越多
 
+直接 nc 過去實作
 
-到main_menu看到v15 = wallet - \*num \* 選擇價格，是值運算，代表可以輸入負數讓錢越來越多  
+得到加密的 flag，看起來是 ASCII 碼，使用 python 轉碼，得到 flag
 
-
-直接nc過去實作  
-  
-得到加密的flag，看起來是ASCII碼，使用python轉碼，得到flag
-
-``` line-numbers
+```line-numbers
 arr = [112, 105, 99, 111, 67, 84, 70, 123, 98, 52, 100, 95, 98, 114, 111, 103, 114, 97, 109, 109, 101, 114, 95, 55, 57, 55, 98, 50, 57, 50, 99, 125]
 
 # 使用列表生成式將ASCII碼轉換為對應的字母
@@ -156,11 +157,11 @@ print(result_string)
 
 `Flag: picoCTF{b4d_brogrammer_797b292c}`
 
-# ARMssembly 1 \[70 points\]
+## ARMssembly 1 \[70 points\]
 
-先把檔案載下來，發現是armv8-a架構，屬於AArch64，因為自己的系統是x86_64所以嘗試Cross-Compile and Link，跑起來時發現要輸入正確的數字才會對，所以使用shell script去暴力解
+先把檔案載下來，發現是 armv8-a 架構，屬於 AArch64，因為自己的系統是 x86_64 所以嘗試 Cross-Compile and Link，跑起來時發現要輸入正確的數字才會對，所以使用 shell script 去暴力解
 
-``` line-numbers
+```line-numbers
 #!/bin/bash
 
 # Cross-Compile and Link
@@ -184,11 +185,11 @@ while true; do
 done
 ```
 
-# ARMssembly 2 \[90 points\]
+## ARMssembly 2 \[90 points\]
 
 把題目給的數字丟進去，轉進制就出來了
 
-``` line-numbers
+```line-numbers
 #!/bin/bash
 
 # Cross-Compile and Link
@@ -202,21 +203,21 @@ output=$(qemu-aarch64 ./chall_2.elf 4189673334 | grep -o '[0-9]*')
 echo "Flag: picoCTF{$(printf "%08x" $output)}"
 ```
 
-# Hurry up! Wait! \[100 points\]
+## Hurry up! Wait! \[100 points\]
 
-載下來後先file發現這檔案其實是elf，雖然檔名是exe
+載下來後先 file 發現這檔案其實是 elf，雖然檔名是 exe
 
-``` line-numbers
+```line-numbers
 ┌──(luyee㉿DESKTOP-KADOGNG)-[~/picoCTF/2021/reverse/Hurry up! Wait!]
 └─$ file svchost.exe
 svchost.exe: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=c083b0f6ecaeb1517082fb6ed0cd9e3f295ec2cc, stripped
 ```
 
-gdb執行的時候噴錯：`error while loading shared libraries: libgnat-7.so.1`  
-所以去載一下需要的libraries，用gdb跑起來發現會卡住，感覺就有貓膩，丟到IDA去分析  
-從main開始分析，看到會call `sub_1D7C` `sub_298A` `sub_1D52`
+gdb 執行的時候噴錯：`error while loading shared libraries: libgnat-7.so.1`  
+所以去載一下需要的 libraries，用 gdb 跑起來發現會卡住，感覺就有貓膩，丟到 IDA 去分析  
+從 main 開始分析，看到會 call `sub_1D7C` `sub_298A` `sub_1D52`
 
-``` line-numbers
+```line-numbers
 main proc near
 ...忽略
 mov     rdi, rax
@@ -228,9 +229,9 @@ call    ___gnat_finalize
 ...忽略
 ```
 
-每個functio都點進去看一下後發現 `sub_298A`裡面有一個delay function，delay 1000000000000000 秒難怪執行後會卡住，所以推測底下就是print flag的function
+每個 functio 都點進去看一下後發現 `sub_298A`裡面有一個 delay function，delay 1000000000000000 秒難怪執行後會卡住，所以推測底下就是 print flag 的 function
 
-``` line-numbers
+```line-numbers
 sub_298A proc near
 ; __unwind {
 push    rbp
@@ -240,17 +241,15 @@ call    _ada__calendar__delays__delay_for
 ...忽略
 ```
 
-> 思路：在rdi賦值後把數值改成0
-
-
+> 思路：在 rdi 賦值後把數值改成 0
 
 `Flag: picoCTF{d15a5m_ftw_eab78e4}`
 
-# gogo \[110 points\]
+## gogo \[110 points\]
 
-先丟到IDA反編譯，從`main_main`中可看出使用*scanf*去讀密碼`_currPasswd`然後傳入`checkPasswd`，所以接著去看`checkPasswd`
+先丟到 IDA 反編譯，從`main_main`中可看出使用*scanf*去讀密碼`_currPasswd`然後傳入`checkPasswd`，所以接著去看`checkPasswd`
 
-``` line-numbers
+```line-numbers
 _currPasswd = (string *)runtime_newobject((runtime__type *)&RTYPE_string_0);
 typ[0].array = (interface_ *)"Enter Password: ";
 typ[0].len = 16;
@@ -266,7 +265,7 @@ fmt_Scanf(*(string *)&typ[0].array, *(_slice_interface_ *)&typ[0].cap);
 main_checkPassword(*_currPasswd);
 ```
 
-``` line-numbers
+```line-numbers
 // main.checkPassword
 unsigned int __usercall main_checkPassword@(string input)
 {
@@ -294,13 +293,13 @@ unsigned int __usercall main_checkPassword@(string input)
 }
 ```
 
-條件:`input.len`要大於32 且 `key[result]`^`input.str[result]`要等於`v4[result]`
+條件:`input.len`要大於 32 且 `key[result]`^`input.str[result]`要等於`v4[result]`
 
-思路: 把`key[result]`和`input.str[result]`找出來後xor就拿到密碼了
+思路: 把`key[result]`和`input.str[result]`找出來後 xor 就拿到密碼了
 
 `key[result]` 記憶體位址：`$esp+$eax*1+0x4`
 
-``` line-numbers
+```line-numbers
 gef➤ hexdump byte $esp+$eax*1+0x4 -s 32
 0x1844ff28     38 36 31 38 33 36 66 31 33 65 33 64 36 32 37 64    861836f13e3d627d
 0x1844ff38     66 61 33 37 35 62 64 62 38 33 38 39 32 31 34 65    fa375bdb8389214e
@@ -308,15 +307,15 @@ gef➤ hexdump byte $esp+$eax*1+0x4 -s 32
 
 `input.str[result]` 記憶體位址：\$esp+\$eax\*1+0x24
 
-``` line-numbers
+```line-numbers
 gef➤  hexdump byte $esp+$eax*1+0x24 -s 32
 0x1844ff48     4a 53 47 5d 41 45 03 54 5d 02 5a 0a 53 57 45 0d    JSG]AE.T].Z.SWE.
 0x1844ff58     05 00 5d 55 54 10 01 0e 41 55 57 4b 45 50 46 01    ..]UT...AUWKEPF.
 ```
 
-寫成pwn script如下：
+寫成 pwn script 如下：
 
-``` line-numbers
+```line-numbers
 from pwn import *
 # password = key[result] ^ input.str[result]
 key = unhex("3836313833366631336533643632376466613337356264623833383932313465")
@@ -337,11 +336,11 @@ print(r.recvall().decode())
 
 `Flag: picoCTF{p1kap1ka_p1c0b187f1db}`
 
-# ARMssembly 3 \[130 points\]
+## ARMssembly 3 \[130 points\]
 
-和ARMssembly 2一樣，編譯起來把數字帶入Flag就出來了
+和 ARMssembly 2 一樣，編譯起來把數字帶入 Flag 就出來了
 
-``` line-numbers
+```line-numbers
 #!/bin/bash
 
 # Cross-Compile and Link
@@ -356,29 +355,29 @@ echo "Flag: picoCTF{$(printf "%08x" $output)}"
 
 `Flag: picoCTF{00000039}`
 
-# Let’s get dynamic \[150 points\]
+## Let’s get dynamic \[150 points\]
 
 先編譯並跑起來隨邊塞值測試
 
-``` line-numbers
+```line-numbers
 ┌──(luyee㉿DESKTOP-KADOGNG)-[~/picoCTF/2021/reverse/Let's get dynamic]
 └─$ gcc chall.S -o chall.o
 
 ┌──(luyee㉿DESKTOP-KADOGNG)-[~/picoCTF/2021/reverse/Let's get dynamic]
-└─$ ./chall.o 
+└─$ ./chall.o
 123
 Correct! You entered the flag.
 ```
 
-看到題目說Let’s get dynamic，可以想到應該是要動態偵錯
+看到題目說 Let’s get dynamic，可以想到應該是要動態偵錯
 
-`x/96i main` -\> 看一下main在幹嘛
+`x/96i main` -\> 看一下 main 在幹嘛
 
-看到\時呼叫memcmp，所以下斷點在\ -\> `b *(main+385)` -\> `run`
+看到\時呼叫 memcmp，所以下斷點在\ -\> `b *(main+385)` -\> `run`
 
-之後可以看到flag已經傳到 `$rsi` ，而剛剛輸入隨便輸入的測值放在`$rdi`
+之後可以看到 flag 已經傳到 `$rsi` ，而剛剛輸入隨便輸入的測值放在`$rdi`
 
-``` line-numbers
+```line-numbers
 memcmp@plt (
    $rdi = 0x00007fffffffe080 → 0x0000000a66647361 ("asdf\n"?),
    $rsi = 0x00007fffffffe040 → "picoCTF{dyn4m1c_4n4ly1s_1s_5up3r_us3ful_14bfa700}",
@@ -391,11 +390,11 @@ memcmp@plt (
 
 `Flag: picoCTF{dyn4m1c_4n4ly1s_1s_5up3r_us3ful_14bfa700}`
 
-# Easy as GDB \[160 points\]
+## Easy as GDB \[160 points\]
 
-可以看到這個function會返回正確的字母數
+可以看到這個 function 會返回正確的字母數
 
-``` line-numbers
+```line-numbers
 gef➤  r
 input the flag: p
 gef➤  x/x $ebp-0x14
@@ -410,9 +409,9 @@ gef➤  x/x $ebp-0x14
 0xffffd294: 0x00000008
 ```
 
-用pwntool寫一個暴力破解程式：
+用 pwntool 寫一個暴力破解程式：
 
-``` line-numbers
+```line-numbers
 # /usr/bin/env python3
 from pwn import *
 from string import *
@@ -442,11 +441,11 @@ while "}" not in flag:
             break
 ```
 
-# ARMssembly 4 \[170 points\]
+## ARMssembly 4 \[170 points\]
 
-和前面幾題都一樣，跑起來傳值就完事，~~已經變template了~~
+和前面幾題都一樣，跑起來傳值就完事，~~已經變 template 了~~
 
-``` line-numbers
+```line-numbers
 #!/bin/bash
 
 # Cross-Compile and Link
@@ -461,15 +460,15 @@ echo "Flag: picoCTF{$(printf "%08x" $output)}"
 
 `Flag: picoCTF{ad498e1c}`
 
-# Powershelly \[180 points\]
+## Powershelly \[180 points\]
 
-這題有點通靈 BJ4了
+這題有點通靈 BJ4 了
 
-# Rolling My Own \[300 points\]
+## Rolling My Own \[300 points\]
 
-先用IDA 反編譯看main:
+先用 IDA 反編譯看 main:
 
-``` line-numbers
+```line-numbers
 __int64 __fastcall main(int a1, char **a2, char **a3)
 {
   unsigned int v3; // eax
@@ -521,14 +520,14 @@ __int64 __fastcall main(int a1, char **a2, char **a3)
 }
 ```
 
-從main中可以看到輸入被存到變數s中
+從 main 中可以看到輸入被存到變數 s 中
 
-``` line-numbers
+```line-numbers
 printf("Password: ");
 fgets(s, 64, stdin);
 ```
 
-``` line-numbers
+```line-numbers
 import hashlib
 
 requiredBytes = ["4889fe48", "bff126dc", "b3070000", "00ffd6"]
@@ -558,15 +557,15 @@ for x in range(0, len(requiredString), 1):
             if found:
                 break
         if found:
-            break     
+            break
 print(password)
 ```
 
 `Flag: picoCTF{r011ing_y0ur_0wn_crypt0_15_h4rd!_3c22f4e9}`
 
-# Checkpass \[375 points\]
+## Checkpass \[375 points\]
 
-``` line-numbers
+```line-numbers
 from pwn import *
 
 flag_try_char = string.digits+string.ascii_letters+"_"
@@ -602,7 +601,7 @@ while any(c == "*" for c in collect_pass):
             collect_pass = find_pass_index(c)
             print("approximate password: " + collect_pass + ", continuing the search...")
             break
-   
- 
+
+
 print("finished.")
 ```
