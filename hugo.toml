@@ -1,0 +1,123 @@
+baseURL = 'https://luyee6813.github.io'
+languageCode = 'en-us'
+title = '#!/bin/note'
+theme = 'PaperMod'
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[minify]
+disableXML = true
+minifyOutput = true
+
+[params]
+env = "production"
+title = "#!/bin/note"
+description = "個人安全研究與 CTF writeups"
+keywords = [
+    "cybersecurity",
+    "penetration testing", 
+    "CTF",
+    "writeups",
+    "infosec",
+    "security research"
+]
+author = "Your Name"
+DateFormat = "January 2, 2006"
+defaultTheme = "auto"
+disableThemeToggle = false
+
+ShowReadingTime = true
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+disableSpecial1stPost = false
+disableScrollToTop = false
+comments = false
+hidemeta = false
+hideSummary = false
+showtoc = false
+tocopen = false
+
+[params.assets]
+favicon = "/favicon.ico"
+favicon16x16 = "/favicon-16x16.png"
+favicon32x32 = "/favicon-32x32.png"
+apple_touch_icon = "/apple-touch-icon.png"
+safari_pinned_tab = "/safari-pinned-tab.svg"
+
+[params.label]
+text = "#!/bin/note"
+icon = "/apple-touch-icon.png"
+iconHeight = 35
+
+[params.profileMode]
+enabled = false
+
+[params.homeInfoParams]
+Title = "歡迎來到我的個人網路角落！"
+Content = "在這裡您會找到我所有的安全研究和 CTF writeups！更多關於我的資訊，請查看關於我的頁面！"
+
+[[params.socialIcons]]
+name = "twitter"
+url = "https://twitter.com/yourusername"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/luyee6813"
+
+[[params.socialIcons]]
+name = "rss"
+url = "/index.xml"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[menu]
+[[menu.main]]
+identifier = "categories"
+name = "Categories"
+url = "/categories/"
+weight = 10
+
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 20
+
+[[menu.main]]
+identifier = "archives"
+name = "Archive"
+url = "/archives/"
+weight = 30
+
+[[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 40
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 50
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+noClasses = false
+codeFences = true
+guessSyntax = true
+lineNos = true
+style = "github"

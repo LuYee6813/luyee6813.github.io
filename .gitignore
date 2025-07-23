@@ -1,0 +1,34 @@
+# Hugo 生成的檔案
+/public/
+/resources/
+/.hugo_build.lock
+
+# 本地環境檔案
+.env
+.env.local
+.env.*.local
+
+# 編輯器和IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 作業系統生成的檔案
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 依賴和快取
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Hugo 快取
+.hugo_build.lock
