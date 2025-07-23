@@ -4,7 +4,7 @@ on:
   # 在 main 分支的推送觸發
   push:
     branches:
-      - main
+      - master
 
   # 允許手動觸發
   workflow_dispatch:
