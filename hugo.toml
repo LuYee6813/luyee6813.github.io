@@ -1,37 +1,121 @@
 baseURL = 'https://luyee6813.github.io'
 languageCode = 'en-us'
-title = '#!/bin/note'
-theme = 'github-style'
-pygmentsCodeFences = true
-pygmentsUseClasses = true
+title = '#!/bin/hack'
+theme = 'PaperMod'
 
 enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
 buildExpired = false
 
+[minify]
+disableXML = true
+minifyOutput = true
+
 [params]
+env = "production"
+title = "#!/bin/hack"
+description = "Cybersecurity Research & CTF Writeups | HackTheBox Style"
+keywords = [
+    "cybersecurity",
+    "penetration testing",
+    "CTF",
+    "writeups",
+    "infosec",
+    "security research",
+    "hack the box",
+    "ethical hacking",
+]
 author = "LuYee6813"
-description = "個人安全研究與 CTF writeups"
-github = "luyee6813"
-email = "luyee6813@gmail.com"
-url = "https://luyee6813.github.io"
-keywords = "cybersecurity, penetration testing, CTF, writeups, infosec, security research"
-rss = true
-lastmod = true
+DateFormat = "January 2, 2006"
+defaultTheme = "dark"
+disableThemeToggle = true
+
+ShowReadingTime = true
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+disableSpecial1stPost = false
+disableScrollToTop = false
+comments = false
+hidemeta = false
+hideSummary = false
+showtoc = true
+tocopen = true
+
+[params.assets]
 favicon = "/favicon.ico"
-avatar = "/images/avatar.png"
-location = "Taiwan"
-userStatusEmoji = "🔐"
-enableGitalk = false
-enableSearch = true
+favicon16x16 = "/favicon-16x16.png"
+favicon32x32 = "/favicon-32x32.png"
+apple_touch_icon = "/apple-touch-icon.png"
+safari_pinned_tab = "/safari-pinned-tab.svg"
 
-[[params.links]]
-title = "GitHub"
-href = "https://github.com/luyee6813"
+[params.label]
+text = "#!/bin/hack"
+icon = "/apple-touch-icon.png"
+iconHeight = 35
 
-[frontmatter]
-lastmod = ["lastmod", ":fileModTime", ":default"]
+# Profile mode
+[params.profileMode]
+enabled = false
+title = "LuYee6813"
+subtitle = "Cybersecurity Researcher & Ethical Hacker"
+imageUrl = "<path/to/image>"
+imageWidth = 120
+imageHeight = 120
+
+# Home info mode
+[params.homeInfoParams]
+Title = "Welcome to #!/bin/hack"
+Content = "Cybersecurity Research, CTF Writeups, and Penetration Testing Adventures"
+
+[[params.socialIcons]]
+name = "github"
+title = "View Source on Github"
+url = "https://github.com/luyee6813"
+
+[[params.socialIcons]]
+name = "email"
+title = "Email"
+url = "mailto:luyee6813@gmail.com"
+
+# Menu
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = 10
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 20
+
+[[menu.main]]
+identifier = "archives"
+name = "Archives"
+url = "/archives/"
+weight = 30
+
+[[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 40
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 50
+
+[permalinks]
+posts = "/posts/:year/:month/:title/"
 
 [markup]
 [markup.goldmark]
@@ -43,7 +127,8 @@ noClasses = false
 codeFences = true
 guessSyntax = true
 lineNos = true
-style = "github"
+style = "monokai"
+lineNumbersInTable = true
 
 [markup.tableOfContents]
 startLevel = 2

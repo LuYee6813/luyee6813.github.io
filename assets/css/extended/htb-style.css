@@ -1,0 +1,616 @@
+/* Hack The Box 風格自定義 CSS */
+
+:root {
+    /* HTB 品牌顏色 */
+    --htb-green: #9fef00;
+    --htb-dark-green: #7fb800;
+    --htb-bg-dark: #0d1117;
+    --htb-bg-darker: #010409;
+    --htb-text-light: #e6edf3;
+    --htb-text-gray: #7d8590;
+    --htb-border: #30363d;
+    --htb-accent: #238636;
+    --htb-red: #ff4757;
+}
+
+/* 整體背景和文字顏色 */
+body {
+    background: linear-gradient(135deg, var(--htb-bg-darker) 0%, var(--htb-bg-dark) 100%);
+    color: var(--htb-text-light);
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+}
+
+/* Header 樣式 */
+.header {
+    background: rgba(13, 17, 23, 0.95);
+    border-bottom: 2px solid var(--htb-green);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    color: var(--htb-green) !important;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--htb-green);
+}
+
+/* 導航連結 */
+.nav a {
+    color: var(--htb-text-light);
+    transition: all 0.3s ease;
+}
+
+.nav a:hover {
+    color: var(--htb-green);
+    text-shadow: 0 0 5px var(--htb-green);
+}
+
+/* 主要內容區域 */
+.main {
+    background: rgba(13, 17, 23, 0.8);
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 20px rgba(159, 239, 0, 0.1);
+}
+
+/* 文章標題 */
+.post-title {
+    color: var(--htb-green);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(159, 239, 0, 0.3);
+}
+
+/* 文章元資訊 */
+.post-meta {
+    color: var(--htb-text-gray);
+}
+
+/* 程式碼區塊 */
+pre:not(.highlight pre):not(.lntable pre) {
+    background: var(--htb-bg-darker) !important;
+    border-radius: 8px;
+    padding: 16px !important;
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+code {
+    background: transparent !important;
+    border-radius: 4px;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+}
+
+.highlight {
+    background: var(--htb-bg-darker) !important;
+    border-radius: 8px;
+    margin: 16px 0;
+    border-left: 4px solid var(--htb-green);
+    overflow: hidden;
+}
+
+.highlight pre {
+    background: var(--htb-bg-darker) !important;
+    border: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* 程式碼行號樣式 - 重新設計 */
+.highlight table {
+    background: var(--htb-bg-darker) !important;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.highlight table td {
+    background: var(--htb-bg-darker) !important;
+    padding: 0;
+    margin: 0;
+    border: none;
+    vertical-align: top;
+}
+
+/* 行號欄位 */
+.highlight table td:first-child {
+    width: 50px;
+    min-width: 50px;
+    text-align: right;
+    padding: 0;
+    border-right: 1px solid var(--htb-border);
+    user-select: none;
+}
+
+/* 程式碼欄位 */
+.highlight table td:last-child {
+    padding: 0;
+    width: auto;
+}
+
+/* 行號樣式 */
+.highlight .lnt {
+    color: var(--htb-text-gray) !important;
+    background: transparent !important;
+    display: inline-block;
+    line-height: 1.5;
+    font-size: 0.9em;
+    padding: 0;
+    margin: 0;
+}
+
+/* 程式碼內容樣式 */
+.highlight table td:last-child pre {
+    background: var(--htb-bg-darker) !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.highlight table td:last-child code {
+    background: transparent !important;
+    padding: 0 !important;
+    line-height: 1.5;
+}
+
+/* 清理舊的樣式 */
+.highlight .lntable {
+    background: var(--htb-bg-darker) !important;
+}
+
+.highlight .lntd {
+    background: var(--htb-bg-darker) !important;
+}
+
+.highlight .ln {
+    display: none !important;
+}
+
+/* 行內程式碼 */
+:not(pre) > code {
+    background: rgba(1, 4, 9, 0.9) !important;
+    color: var(--htb-green) !important;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(159, 239, 0, 0.4);
+    font-size: 0.9em;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+}
+
+/* 連結樣式 */
+a {
+    color: var(--htb-green);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--htb-dark-green);
+    text-shadow: 0 0 5px var(--htb-green);
+}
+
+/* 按鈕樣式 */
+.btn, button {
+    background: linear-gradient(135deg, var(--htb-green), var(--htb-dark-green));
+    color: var(--htb-bg-dark);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn:hover, button:hover {
+    box-shadow: 0 0 15px rgba(159, 239, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* 目錄 (TOC) 樣式 */
+.toc {
+    background: rgba(1, 4, 9, 0.9);
+    border: 1px solid var(--htb-green);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 0 15px rgba(159, 239, 0, 0.2);
+}
+
+.toc-title {
+    color: var(--htb-green);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.toc ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+.toc li::before {
+    content: "▶ ";
+    color: var(--htb-green);
+    font-weight: bold;
+}
+
+.toc a {
+    color: var(--htb-text-light);
+    transition: color 0.3s ease;
+}
+
+.toc a:hover {
+    color: var(--htb-green);
+}
+
+/* 標籤樣式 */
+.tag {
+    background: rgba(159, 239, 0, 0.1);
+    color: var(--htb-green);
+    border: 1px solid rgba(159, 239, 0, 0.3);
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    margin: 2px;
+    display: inline-block;
+}
+
+/* 分類樣式 */
+.category {
+    background: linear-gradient(135deg, var(--htb-green), var(--htb-dark-green));
+    color: var(--htb-bg-dark);
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* 頁腳 */
+.footer {
+    background: var(--htb-bg-darker);
+    border-top: 2px solid var(--htb-green);
+    color: var(--htb-text-gray);
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* 搜尋框 */
+.search-input {
+    background: var(--htb-bg-darker);
+    border: 2px solid var(--htb-green);
+    color: var(--htb-text-light);
+    padding: 10px 15px;
+    border-radius: 25px;
+    outline: none;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 15px rgba(159, 239, 0, 0.5);
+}
+
+/* 引用區塊 */
+blockquote {
+    border-left: 4px solid var(--htb-green);
+    background: rgba(159, 239, 0, 0.05);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 0 5px 5px 0;
+}
+
+/* 表格樣式 - 只適用於非程式碼區塊的表格 */
+.post-content table:not(.lntable),
+table:not(.lntable) {
+    border-collapse: collapse;
+    width: 100% !important;
+    max-width: 100%;
+    background: var(--htb-bg-darker);
+    border: 2px solid var(--htb-green);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 0 15px rgba(159, 239, 0, 0.1);
+    table-layout: auto;
+}
+
+.post-content th:not(.lntable th),
+th:not(.lntable th) {
+    background: linear-gradient(135deg, var(--htb-green), var(--htb-dark-green));
+    color: var(--htb-bg-dark);
+    font-weight: bold;
+    padding: 15px 12px;
+    text-align: left;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--htb-green);
+}
+
+.post-content td:not(.lntd),
+td:not(.lntd) {
+    padding: 12px;
+    border-bottom: 1px solid var(--htb-border);
+    color: var(--htb-text-light);
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+.post-content tr:not(.lntable tr):nth-child(even),
+tr:not(.lntable tr):nth-child(even) {
+    background: rgba(159, 239, 0, 0.03);
+}
+
+.post-content tr:not(.lntable tr):hover,
+tr:not(.lntable tr):hover {
+    background: rgba(159, 239, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--htb-bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--htb-green);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--htb-dark-green);
+}
+
+/* 動畫效果 */
+@keyframes glow {
+    0% { text-shadow: 0 0 5px var(--htb-green); }
+    50% { text-shadow: 0 0 20px var(--htb-green), 0 0 30px var(--htb-green); }
+    100% { text-shadow: 0 0 5px var(--htb-green); }
+}
+
+.glow-text {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .main {
+        margin: 10px;
+        padding: 15px;
+    }
+}
+
+/* 程式碼複製按鈕 */
+.copy-button {
+    background: var(--htb-green);
+    color: var(--htb-bg-dark);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.copy-button:hover {
+    background: var(--htb-dark-green);
+    box-shadow: 0 0 10px rgba(159, 239, 0, 0.5);
+}
+
+/* 確保內容區域寬度一致 */
+.post-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* 表格容器 */
+.post-content table {
+    display: table;
+    width: 100% !important;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* 程式碼區塊容器 */
+.post-content .highlight {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* 確保響應式 */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+    
+    th, td {
+        padding: 8px 6px;
+    }
+    
+    .highlight pre {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .highlight table td:first-child {
+        width: 40px;
+        min-width: 40px;
+        padding-right: 8px;
+    }
+    
+    .highlight table td:last-child {
+        padding-left: 12px;
+    }
+}
+
+/* 強制顯示行號 - 調試用 */
+.highlight * {
+    box-sizing: border-box;
+}
+
+/* 確保 Hugo 生成的行號表格正確顯示 */
+div.highlight table.lntable {
+    background: var(--htb-bg-darker) !important;
+    width: 100% !important;
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+
+div.highlight table.lntable tr {
+    background: var(--htb-bg-darker) !important;
+}
+
+div.highlight table.lntable tr:nth-child(even) {
+    background: var(--htb-bg-darker) !important;
+}
+
+div.highlight table.lntable tr:hover {
+    background: var(--htb-bg-darker) !important;
+}
+
+div.highlight table.lntable td.lntd {
+    background: var(--htb-bg-darker) !important;
+    border: none !important;
+    padding: 0 !important;
+    vertical-align: baseline !important;
+    border-bottom: none !important;
+    line-height: 1.6 !important;
+}
+
+/* 行號列的特定樣式 */
+div.highlight table.lntable td.lntd:first-child {
+    width: 50px !important;
+    min-width: 50px !important;
+    text-align: right !important;
+    padding: 16px 8px 16px 16px !important;
+    border-right: 1px solid var(--htb-border) !important;
+}
+
+div.highlight table.lntable td.lntd:first-child pre {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: var(--htb-bg-darker) !important;
+    border: none !important;
+    text-align: right !important;
+    border-radius: 0 !important;
+    line-height: 1.6 !important;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+div.highlight table.lntable td.lntd:first-child pre code {
+    background: var(--htb-bg-darker) !important;
+}
+
+/* 程式碼列的特定樣式 */
+div.highlight table.lntable td.lntd:last-child {
+    padding: 16px 16px 16px 16px !important;
+    width: auto !important;
+}
+
+div.highlight table.lntable td.lntd:last-child pre {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: var(--htb-bg-darker) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    line-height: 1.6 !important;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+div.highlight table.lntable td.lntd:last-child pre code {
+    background: var(--htb-bg-darker) !important;
+}
+
+/* 額外確保垂直對齊 */
+div.highlight table.lntable td.lntd {
+    vertical-align: baseline !important;
+    line-height: 1.6 !important;
+}
+
+div.highlight table.lntable td.lntd pre {
+    vertical-align: baseline !important;
+}
+
+/* 確保所有行都有一致的高度 */
+div.highlight table.lntable span.lnt,
+div.highlight table.lntable span.line {
+    box-sizing: border-box !important;
+    vertical-align: top !important;
+}
+
+/* 程式碼行樣式 */
+div.highlight table.lntable td.lntd:last-child span.line {
+    display: block !important;
+    line-height: 1.6 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 處理空行的高度問題 */
+div.highlight table.lntable td.lntd:last-child span.line:empty::before {
+    content: " " !important;
+    white-space: pre !important;
+}
+
+div.highlight table.lntable td.lntd:last-child span.cl {
+    color: var(--htb-text-light) !important;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    display: inline !important;
+}
+
+/* 行號數字樣式 */
+div.highlight table.lntable span.lnt {
+    color: var(--htb-text-gray) !important;
+    background: transparent !important;
+    user-select: none !important;
+    display: block !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: right !important;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+}
+
+/* 強制修正所有可能的背景顏色衝突 */
+div.highlight table.lntable td.lntd:first-child,
+div.highlight table.lntable td.lntd:first-child *,
+div.highlight table.lntable td.lntd:first-child pre,
+div.highlight table.lntable td.lntd:first-child pre *,
+div.highlight table.lntable td.lntd:first-child code,
+div.highlight table.lntable td.lntd:first-child code * {
+    background: var(--htb-bg-darker) !important;
+    background-color: var(--htb-bg-darker) !important;
+}
+
+div.highlight table.lntable td.lntd:last-child,
+div.highlight table.lntable td.lntd:last-child *,
+div.highlight table.lntable td.lntd:last-child pre,
+div.highlight table.lntable td.lntd:last-child pre *,
+div.highlight table.lntable td.lntd:last-child code,
+div.highlight table.lntable td.lntd:last-child code * {
+    background: var(--htb-bg-darker) !important;
+    background-color: var(--htb-bg-darker) !important;
+}
