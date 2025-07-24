@@ -43,7 +43,7 @@ comments = false
 hidemeta = false
 hideSummary = false
 showtoc = true
-tocopen = true
+tocopen = false
 
 [params.assets]
 favicon = "/favicon.ico"
@@ -61,12 +61,12 @@ iconHeight = 35
 enabled = false
 
 [params.homeInfoParams]
-Title = "歡迎來到我的個人網路角落！"
-Content = "在這裡您會找到我所有的安全研究和 CTF writeups！更多關於我的資訊，請查看關於我的頁面！"
+Title = "歡迎來到LuYee6813的部落格"
+Content = "這裡是我的個人安全研究與 CTF writeups的空間。希望你能在這裡找到有用的資訊！"
 
 [[params.socialIcons]]
-name = "twitter"
-url = "https://twitter.com/yourusername"
+name = "X"
+url = "https://x.com/yee6813"
 
 [[params.socialIcons]]
 name = "github"

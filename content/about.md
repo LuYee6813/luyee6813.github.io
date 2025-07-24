@@ -26,4 +26,4 @@ disableShare: true
 ## 聯絡方式
 
 - GitHub: [luyee6813](https://github.com/luyee6813)
-- Twitter: [@yourusername](https://twitter.com/yourusername)
+- X: [@yee6813](https://x.com/yee6813)
