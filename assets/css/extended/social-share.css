@@ -1,0 +1,46 @@
+/* 社交分享卡片樣式 */
+.social-share-card {
+    width: 1200px;
+    height: 630px;
+    background: linear-gradient(135deg, #0d1117 0%, #010409 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: 'Fira Code', monospace;
+}
+
+.social-share-content {
+    text-align: center;
+    color: #e6edf3;
+}
+
+.social-share-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    box-shadow: 0 0 50px rgba(159, 239, 0, 0.5);
+    border: 4px solid #9fef00;
+}
+
+.social-share-title {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #9fef00, #7fb800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.social-share-subtitle {
+    font-size: 1.5rem;
+    color: #7d8590;
+    margin-bottom: 2rem;
+}
+
+.social-share-description {
+    font-size: 1.2rem;
+    color: #e6edf3;
+    max-width: 600px;
+}

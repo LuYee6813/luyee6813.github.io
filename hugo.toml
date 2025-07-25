@@ -28,6 +28,7 @@ keywords = [
 ]
 author = "LuYee6813"
 DateFormat = "January 2, 2006"
+images = ["/images/avatar.png"]
 defaultTheme = "dark"
 disableThemeToggle = true
 
@@ -49,25 +50,38 @@ tocopen = false
 ShowAuthor = true
 
 [params.assets]
-favicon = "/favicon.ico"
-favicon16x16 = "/favicon-16x16.png"
-favicon32x32 = "/favicon-32x32.png"
-apple_touch_icon = "/apple-touch-icon.png"
-safari_pinned_tab = "/safari-pinned-tab.svg"
+favicon = "/images/avatar.png"
+favicon16x16 = "/images/avatar.png"
+favicon32x32 = "/images/avatar.png"
+apple_touch_icon = "/images/avatar.png"
+safari_pinned_tab = "/images/avatar.png"
 
 [params.label]
 text = "#!/bin/hack"
-icon = "/apple-touch-icon.png"
+icon = "/images/avatar.png"
 iconHeight = 35
 
 # Profile mode
 [params.profileMode]
-enabled = false
+enabled = true
 title = "LuYee6813"
 subtitle = "Cybersecurity Researcher & Ethical Hacker"
-imageUrl = "<path/to/image>"
-imageWidth = 120
-imageHeight = 120
+imageUrl = "/images/avatar.png"
+imageWidth = 150
+imageHeight = 150
+imageTitle = "LuYee6813"
+
+[[params.profileMode.buttons]]
+name = "Posts"
+url = "/posts/"
+
+[[params.profileMode.buttons]]
+name = "Archives"
+url = "/archives/"
+
+[[params.profileMode.buttons]]
+name = "About"
+url = "/about/"
 
 # Home info mode
 [params.homeInfoParams]

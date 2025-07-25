@@ -1,0 +1,78 @@
+/* 頭像增強樣式 */
+.profile img {
+    border-radius: 50% !important;
+    box-shadow: 0 8px 32px rgba(159, 239, 0, 0.3) !important;
+    border: 3px solid rgba(159, 239, 0, 0.5) !important;
+    transition: all 0.3s ease !important;
+}
+
+.profile img:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 12px 48px rgba(159, 239, 0, 0.5) !important;
+}
+
+/* Profile Mode 美化 */
+.profile {
+    text-align: center !important;
+    padding: 2rem !important;
+}
+
+.profile .profile_inner h1 {
+    background: linear-gradient(45deg, #9fef00, #7fb800) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.profile .profile_inner .subtitle {
+    color: var(--secondary) !important;
+    font-style: italic !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* 按鈕美化 */
+.profile .buttons {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    margin-top: 1.5rem !important;
+    flex-wrap: wrap !important;
+}
+
+.profile .buttons .button {
+    background: rgba(159, 239, 0, 0.1) !important;
+    border: 1px solid rgba(159, 239, 0, 0.3) !important;
+    color: var(--primary) !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 25px !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+}
+
+.profile .buttons .button:hover {
+    background: rgba(159, 239, 0, 0.2) !important;
+    border-color: #9fef00 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 16px rgba(159, 239, 0, 0.2) !important;
+}
+
+/* 社交圖標在 Profile Mode 下的樣式 */
+.profile .social-icons {
+    margin-top: 2rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+}
+
+.profile .social-icons a {
+    color: var(--secondary) !important;
+    transition: all 0.3s ease !important;
+}
+
+.profile .social-icons a:hover {
+    color: #9fef00 !important;
+    transform: translateY(-2px) !important;
+}

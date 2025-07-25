@@ -1,0 +1,63 @@
+/* 日期顯示增強樣式 - 簡化版 */
+
+/* 文章頁面和列表中的日期樣式 */
+.entry-footer span,
+.post-meta span {
+    color: #9fef00 !important;
+    font-weight: 600 !important;
+    background: rgba(159, 239, 0, 0.1) !important;
+    padding: 0.25rem 0.6rem !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(159, 239, 0, 0.3) !important;
+    margin-right: 0.5rem !important;
+    transition: all 0.3s ease !important;
+}
+
+/* 特別針對日期的樣式 */
+.entry-footer span[title*="2025"],
+.entry-footer span[title*="2024"],
+.entry-footer span[title*="2023"],
+.post-meta span[title*="2025"],
+.post-meta span[title*="2024"],
+.post-meta span[title*="2023"] {
+    background: linear-gradient(45deg, rgba(159, 239, 0, 0.2), rgba(127, 184, 0, 0.1)) !important;
+    color: #9fef00 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 3px rgba(159, 239, 0, 0.4) !important;
+    border: 1.5px solid rgba(159, 239, 0, 0.5) !important;
+}
+
+/* 懸停效果 */
+.entry-footer span:hover,
+.post-meta span:hover {
+    background: rgba(159, 239, 0, 0.25) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 10px rgba(159, 239, 0, 0.3) !important;
+}
+
+/* 作者名稱特殊樣式 */
+.entry-footer span:last-child,
+.post-meta span:last-child {
+    background: rgba(35, 134, 54, 0.2) !important;
+    color: #7fb800 !important;
+    border-color: rgba(35, 134, 54, 0.4) !important;
+}
+
+/* 增強對比度 */
+.entry-footer,
+.post-meta {
+    margin-top: 1rem !important;
+    padding-top: 0.8rem !important;
+    border-top: 1px solid rgba(159, 239, 0, 0.2) !important;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .entry-footer span,
+    .post-meta span {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.3rem !important;
+        display: inline-block !important;
+    }
+}
+/* trigger */
