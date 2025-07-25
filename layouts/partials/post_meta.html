@@ -1,0 +1,17 @@
+{{- if not .Date.IsZero -}}
+<div class="post-meta">
+  <span class="post-date" title="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+    {{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}
+  </span>
+  {{- if .Params.tags }}
+  <div class="post-tags-meta">
+    {{- range .Params.tags }}
+    <span class="tag-item">
+      <a href="{{ "/tags/" | relURL }}{{ . | urlize }}/">
+        {{ . }}</a>
+    </span>
+    {{- end }}
+  </div>
+  {{- end }}
+</div>
+{{- end }}

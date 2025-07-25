@@ -2,7 +2,7 @@
 title: "常見十大工控協定與攻擊手法"
 date: 2024-03-21
 categories: [OT Security]
-tags: [Modbus S7 DNP3]
+tags: [Modbus, S7, DNP3]
 ---
 
 # 常見十大工控協定與攻擊手法

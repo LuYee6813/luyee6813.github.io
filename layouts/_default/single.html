@@ -1,9 +1,8 @@
 {{- define "main" }}
 
 <article class="post-single">
-  {{- partial "breadcrumbs.html" . }}
   <header class="post-header">
-    {{- partial "post_meta.html" . }}
+    {{- partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent">
       {{ .Title }}
       {{- with .Description }}
@@ -11,6 +10,9 @@
         {{ . }}</span>
       {{- end }}
     </h1>
+    {{- if not (.Param "hideMeta") }}
+    {{- partial "post_meta.html" . }}
+    {{- end }}
     {{- if .Params.cover.image }}
     {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
     {{- end }}
