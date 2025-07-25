@@ -233,7 +233,6 @@ a:hover {
 }
 
 .toc li::before {
-    content: "▶ ";
     color: var(--htb-green);
     font-weight: bold;
 }
@@ -592,6 +591,10 @@ div.highlight table.lntable span.lnt {
     margin: 0 !important;
     text-align: right !important;
     font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+}
+
+.post-tags a,.share-buttons,.paginav {
+    background: var(--htb-bg-dark) !important;
 }
 
 /* 強制修正所有可能的背景顏色衝突 */

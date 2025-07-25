@@ -1,0 +1,183 @@
+/* 修正程式碼區塊背景配色問題 */
+
+/* 重置主題的程式碼背景變數 */
+:root {
+    --code-bg: rgba(1, 4, 9, 0.9) !important;
+    --code-block-bg: var(--htb-bg-darker) !important;
+}
+
+/* 強制覆蓋 PaperMod 主題的程式碼樣式 */
+.post-content code {
+    background: rgba(1, 4, 9, 0.9) !important;
+    color: var(--htb-green) !important;
+    border: 1px solid rgba(159, 239, 0, 0.4) !important;
+    padding: 3px 6px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    font-family: 'Fira Code', 'JetBrains Mono', Monaco, 'Cascadia Code', monospace !important;
+    margin: 0 2px !important;
+}
+
+/* 程式碼區塊樣式 */
+.post-content pre code {
+    background: var(--htb-bg-darker) !important;
+    color: #cad3f5 !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    display: block !important;
+    overflow-x: auto !important;
+    line-height: 1.6 !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+    text-indent: 0 !important;
+}
+
+/* Highlight 容器樣式 */
+.post-content .highlight {
+    background: var(--htb-bg-darker) !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(159, 239, 0, 0.2) !important;
+    margin: 20px 0 !important;
+    overflow: hidden !important;
+}
+
+.post-content .highlight:not(table) {
+    background: var(--htb-bg-darker) !important;
+}
+
+/* Chroma 語法高亮樣式重置 */
+.chroma {
+    background-color: var(--htb-bg-darker) !important;
+    color: #cad3f5 !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+}
+
+/* 重置所有可能造成內縮的元素 */
+.chroma * {
+    text-indent: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* 只保留行號的左側間距 */
+.chroma .lnt,
+.chroma .ln {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+/* 表格式程式碼區塊 */
+.post-content .highlight table {
+    background: var(--htb-bg-darker) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+}
+
+.post-content .highlight table td {
+    background: var(--htb-bg-darker) !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.post-content .highlight table td:first-child {
+    background: rgba(1, 4, 9, 0.7) !important;
+    border-right: 1px solid rgba(159, 239, 0, 0.2) !important;
+    width: 40px !important;
+}
+
+.post-content .highlight table td:last-child {
+    background: var(--htb-bg-darker) !important;
+    width: 100% !important;
+}
+
+/* 行號樣式 */
+.chroma .lnt,
+.chroma .ln {
+    color: rgba(159, 239, 0, 0.6) !important;
+    background: transparent !important;
+    padding: 0 8px !important;
+    user-select: none !important;
+}
+
+/* 確保程式碼內的元素不會被覆蓋 */
+.post-content .highlight table td:last-child pre {
+    background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+    text-indent: 0 !important;
+}
+
+.post-content .highlight table td:last-child code {
+    background: transparent !important;
+    color: #cad3f5 !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+    text-indent: 0 !important;
+}
+
+/* 修正 Chroma 生成的程式碼結構 */
+.chroma .line {
+    white-space: pre !important;
+    text-indent: 0 !important;
+}
+
+.chroma .cl {
+    white-space: pre !important;
+    text-indent: 0 !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* 連結內的程式碼 */
+.post-content a code {
+    background: rgba(1, 4, 9, 0.9) !important;
+    color: var(--htb-green) !important;
+    border: 1px solid rgba(159, 239, 0, 0.4) !important;
+}
+
+.post-content a:hover code {
+    background: rgba(159, 239, 0, 0.1) !important;
+    border-color: var(--htb-green) !important;
+}
+
+/* 確保語法高亮顏色正確 */
+.chroma .k { color: #c6a0f6 !important; } /* 關鍵字 */
+.chroma .s { color: #a6da95 !important; } /* 字串 */
+.chroma .c1 { color: #6e738d !important; } /* 註解 */
+.chroma .nf { color: #8aadf4 !important; } /* 函數名 */
+.chroma .nb { color: #f5bde6 !important; } /* 內建函數 */
+.chroma .mi { color: #f5a97f !important; } /* 數字 */
+.chroma .o { color: var(--htb-green) !important; } /* 運算符 */
+
+/* 滾動條樣式 */
+.post-content .highlight pre code::-webkit-scrollbar {
+    height: 8px !important;
+}
+
+.post-content .highlight pre code::-webkit-scrollbar-track {
+    background: rgba(1, 4, 9, 0.5) !important;
+    border-radius: 4px !important;
+}
+
+.post-content .highlight pre code::-webkit-scrollbar-thumb {
+    background: rgba(159, 239, 0, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+.post-content .highlight pre code::-webkit-scrollbar-thumb:hover {
+    background: rgba(159, 239, 0, 0.5) !important;
+}

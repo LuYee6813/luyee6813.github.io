@@ -1,55 +1,65 @@
 {{- define "main" }}
 
-<article class="post-single">
-  <header class="post-header">
-    {{- partial "breadcrumbs.html" . }}
-    <h1 class="post-title entry-hint-parent">
-      {{ .Title }}
-      {{- with .Description }}
-      <span class="entry-hint" title="{{ . }}">
-        {{ . }}</span>
+<div class="content-container">
+  <article class="post-single main-content">
+    <header class="post-header">
+      {{- partial "breadcrumbs.html" . }}
+      <h1 class="post-title entry-hint-parent">
+        {{ .Title }}
+        {{- with .Description }}
+        <span class="entry-hint" title="{{ . }}">
+          {{ . }}</span>
+        {{- end }}
+      </h1>
+      {{- if not (.Param "hideMeta") }}
+      {{- partial "post_meta.html" . }}
       {{- end }}
-    </h1>
-    {{- if not (.Param "hideMeta") }}
-    {{- partial "post_meta.html" . }}
+      {{- if .Params.cover.image }}
+      {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
+      {{- end }}
+    </header>
+    {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden }}
+    {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
+    {{- if .Content }}
+    <div class="post-content">
+      {{- if not (.Param "disableAnchoredHeadings") }}
+      {{- partial "anchored_headings.html" .Content -}}
+      {{- else }}
+      {{ .Content }}
+      {{ end }}
+    </div>
     {{- end }}
-    {{- if .Params.cover.image }}
-    {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
-    {{- end }}
-  </header>
-  {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden }}
-  {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
-  {{- if (.Param "ShowToc") }}
-  {{- partial "toc.html" . }}
-  {{- end }}
-  {{- if .Content }}
-  <div class="post-content">
-    {{- if not (.Param "disableAnchoredHeadings") }}
-    {{- partial "anchored_headings.html" .Content -}}
-    {{- else }}
-    {{ .Content }}
-    {{ end }}
+
+    <footer class="post-footer">
+      {{- if .Params.tags }}
+      <ul class="post-tags">
+        {{- range ($.GetTerms "tags") }}
+        <li><a href="{{ .Permalink }}">
+            {{ .LinkTitle }}</a></li>
+        {{- end }}
+      </ul>
+      {{- end }}
+      {{- if (.Param "ShowPostNavLinks") }}
+      {{- partial "post_nav_links.html" . }}
+      {{- end }}
+      {{- if (.Param "ShowShareButtons") }}
+      {{- partial "share_icons.html" . -}}
+      {{- end }}
+    </footer>
+    {{/* 在這裡添加聯絡資訊 */}}
+    {{- partial "author_contact.html" . }}
+
+  </article>
+  {{- if (or (.Param "ShowToc") (.Param "showtoc") (.Site.Params.showtoc)) }}
+  <div class="toc-sidebar" id="toc-sidebar">
+    <button class="toc-toggle" id="toc-toggle" title="展開/收合 TOC">
+      <span id="toc-toggle-icon">−</span>
+    </button>
+    <div class="toc-title">Table of Contents</div>
+    <div class="toc-content" id="toc-content">
+      {{ .TableOfContents }}
+    </div>
   </div>
   {{- end }}
-
-  <footer class="post-footer">
-    {{- if .Params.tags }}
-    <ul class="post-tags">
-      {{- range ($.GetTerms "tags") }}
-      <li><a href="{{ .Permalink }}">
-          {{ .LinkTitle }}</a></li>
-      {{- end }}
-    </ul>
-    {{- end }}
-    {{- if (.Param "ShowPostNavLinks") }}
-    {{- partial "post_nav_links.html" . }}
-    {{- end }}
-    {{- if (.Param "ShowShareButtons") }}
-    {{- partial "share_icons.html" . -}}
-    {{- end }}
-  </footer>
-  {{/* 在這裡添加聯絡資訊 */}}
-  {{- partial "author_contact.html" . }}
-
-</article>
+</div>
 {{- end }}{{/* end main */}}

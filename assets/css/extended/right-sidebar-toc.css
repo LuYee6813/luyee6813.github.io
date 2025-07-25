@@ -1,0 +1,363 @@
+/* 右側固定 Table of Contents 樣式 */
+
+/* 主要容器布局 */
+.content-container {
+    display: flex !important;
+    max-width: none !important;
+    margin: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* 主要內容區域 */
+.main-content {
+    flex: 1 !important;
+    width: 100% !important;
+    padding-right: 0 !important; /* 移除右側留空，讓文章不被壓縮 */
+    max-width: none !important;
+}
+
+/* 確保文章內容有合適的最大寬度以保持可讀性 */
+.main-content .post-content {
+    max-width: 1000px !important; /* 增加最大寬度 */
+    margin: 0 auto !important;
+}
+
+/* 確保 header 和 footer 也有適當的邊距 */
+.main-content .post-header,
+.main-content .post-footer {
+    max-width: 1000px !important; /* 增加最大寬度 */
+    margin: 0 auto !important;
+}
+
+/* 右側 TOC 容器 */
+.toc-sidebar {
+    position: fixed !important;
+    top: 80px !important;
+    right: 20px !important;
+    width: 280px !important;
+    max-height: calc(100vh - 100px) !important;
+    overflow-y: auto !important;
+    z-index: 100 !important;
+    padding: 20px !important;
+    background: rgba(1, 4, 9, 0.95) !important;
+    border: 1px solid var(--htb-green) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 0 20px rgba(159, 239, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: transform 0.3s ease, opacity 0.3s ease !important;
+}
+
+/* TOC 內容區域 */
+.toc-content {
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+}
+
+/* TOC 收起狀態 - 改為內容收合而不是側邊欄移動 */
+.toc-sidebar.collapsed .toc-content {
+    display: none !important;
+}
+
+.toc-sidebar.collapsed .toc-title {
+    margin-bottom: 0 !important;
+}
+
+/* TOC 切換按鈕 */
+.toc-toggle {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    background: rgba(1, 4, 9, 0.8) !important;
+    border: 1px solid var(--htb-green) !important;
+    color: var(--htb-green) !important;
+    cursor: pointer !important;
+    font-size: 1em !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.3s ease !important;
+    z-index: 101 !important;
+    min-width: 24px !important;
+    text-align: center !important;
+}
+
+.toc-toggle:hover {
+    background: rgba(159, 239, 0, 0.2) !important;
+    color: #9fef00 !important;
+    text-shadow: 0 0 5px rgba(159, 239, 0, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+/* TOC 標題 */
+.toc-sidebar .toc-title {
+    color: var(--htb-green);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9em;
+    border-bottom: 1px solid rgba(159, 239, 0, 0.3);
+    padding-bottom: 8px;
+}
+
+/* TOC 列表樣式 */
+.toc-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-sidebar li {
+    margin: 5px 0;
+    position: relative;
+}
+
+.toc-sidebar li::before {
+    color: var(--htb-green);
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.toc-sidebar a {
+    color: var(--htb-text-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.85em;
+    line-height: 1.4;
+    display: block;
+    padding: 2px 0;
+}
+
+.toc-sidebar a:hover {
+    color: var(--htb-green);
+    text-shadow: 0 0 5px rgba(159, 239, 0, 0.5);
+}
+
+/* 嵌套層級縮進 */
+.toc-sidebar ul ul {
+    margin-left: 15px;
+    border-left: 1px solid rgba(159, 239, 0, 0.2);
+    padding-left: 10px;
+}
+
+.toc-sidebar ul ul li::before {
+    color: rgba(159, 239, 0, 0.7);
+}
+
+.toc-sidebar ul ul ul li::before {
+    color: rgba(159, 239, 0, 0.5);
+}
+
+/* 滾動條樣式 */
+.toc-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.toc-sidebar::-webkit-scrollbar-track {
+    background: rgba(1, 4, 9, 0.3);
+    border-radius: 3px;
+}
+
+.toc-sidebar::-webkit-scrollbar-thumb {
+    background: var(--htb-green);
+    border-radius: 3px;
+}
+
+.toc-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(159, 239, 0, 0.8);
+}
+
+/* 當前活動項目樣式 */
+.toc-sidebar .active {
+    color: var(--htb-green) !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(159, 239, 0, 0.6);
+}
+
+/* 響應式設計 - 大螢幕 */
+@media (max-width: 1400px) {
+    .toc-sidebar {
+        right: 15px !important;
+        width: 260px !important;
+    }
+}
+
+/* 響應式設計 - 直立式顯示器 */
+@media (max-width: 1200px) {
+    .toc-sidebar {
+        right: 10px !important;
+        width: 240px !important;
+    }
+}
+
+/* 響應式設計 - 窄螢幕直立式顯示器 */
+@media (max-width: 1100px) {
+    .toc-sidebar {
+        right: 5px !important;
+        width: 180px !important;
+    }
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 800px !important;
+    }
+}
+
+/* 響應式設計 - 極窄直立式顯示器 (針對 1072px 等解析度) */
+@media (max-width: 1080px) {
+    .toc-sidebar {
+        right: 3px !important;
+        width: 160px !important;
+        padding: 15px !important;
+    }
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 750px !important;
+    }
+    
+    .toc-sidebar .toc-title {
+        font-size: 0.8em !important;
+    }
+    
+    .toc-sidebar a {
+        font-size: 0.8em;
+        line-height: 1.3;
+    }
+}
+
+/* 響應式設計 - 小直立式顯示器 */
+@media (max-width: 1000px) {
+    .toc-sidebar {
+        right: 5px !important;
+        width: 200px !important;
+    }
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 700px !important;
+    }
+}
+
+/* 響應式設計 - 小螢幕平板 */
+@media (max-width: 992px) {
+    .toc-sidebar {
+        right: 5px !important;
+        width: 220px !important;
+    }
+}
+
+/* 響應式設計 - 手機橫向 */
+@media (max-width: 900px) {
+    .content-container {
+        flex-direction: column !important;
+    }
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 20px !important;
+    }
+    
+    .toc-sidebar {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-height: none !important;
+        margin: 0 20px 20px 20px !important;
+        order: -1 !important;
+    }
+    
+    .toc-sidebar .toc-title {
+        text-align: left !important;
+    }
+}
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 100%;
+        margin: 0;
+        padding: 0 20px;
+    }
+    
+    .toc-sidebar {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
+        max-height: none;
+        margin: 0 20px 20px 20px;
+        order: -1;
+    }
+    
+    .toc-sidebar .toc-title {
+        text-align: left;
+    }
+
+
+/* 響應式設計 - 手機直向 */
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+    
+    .main-content {
+        padding-right: 0;
+    }
+    
+    .main-content .post-content,
+    .main-content .post-header,
+    .main-content .post-footer {
+        max-width: 100%;
+        margin: 0;
+        padding: 0 15px;
+    }
+    
+    .toc-sidebar {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: calc(100% - 30px);
+        max-height: none;
+        margin: 0 15px 20px 15px;
+        order: -1;
+        padding: 15px;
+    }
+    
+    .toc-sidebar .toc-title {
+        text-align: left;
+        font-size: 0.8em;
+    }
+    
+    .toc-sidebar a {
+        font-size: 0.8em;
+    }
+}
+
+/* 隱藏原來的 TOC */
+.toc:not(.toc-sidebar) {
+    display: none;
+}
+
+/* 確保內容不會被遮蓋 */
+.post-single {
+    padding-right: 0;
+}
+
+/* 平滑滾動效果 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 標題錨點偏移調整 */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+    scroll-margin-top: 80px;
+}

@@ -26,6 +26,77 @@
 {{/* 通用社交分享圖片 */}}
 <link rel="image_src" href="{{ "/images/avatar.png" | absURL }}" />
 
+{{/* HTB 主題樣式 - 首先載入基礎樣式 */}}
+
+{{ $htbCSS := resources.Get "css/extended/htb-style.css" }}
+
+{{ if $htbCSS }}
+<link rel="stylesheet" href="{{ $htbCSS.RelPermalink }}">
+
+{{ end }}
+
+{{/* HTB 主題變數定義 - 高優先級覆蓋 */}}
+<style>
+  :root {
+    --htb-green: #9fef00 !important;
+    --htb-text-light: #e6e6e6 !important;
+    --htb-text-gray: #a1a1a1 !important;
+    --htb-dark-bg: rgba(1, 4, 9, 0.95) !important;
+  }
+</style>
+
+{{/* 右側 TOC 樣式和功能 */}}
+
+{{ $tocCSS := resources.Get "css/extended/right-sidebar-toc.css" }}
+
+{{ if $tocCSS }}
+<link rel="stylesheet" href="{{ $tocCSS.RelPermalink }}">
+
+{{ end }}
+
+{{/* 聯絡作者樣式 */}}
+
+{{ $authorCSS := resources.Get "css/extended/author-contact.css" }}
+
+{{ if $authorCSS }}
+<link rel="stylesheet" href="{{ $authorCSS.RelPermalink }}">
+
+{{ end }}
+
+{{/* Profile 增強樣式 */}}
+
+{{ $profileCSS := resources.Get "css/extended/profile-enhancements.css" }}
+
+{{ if $profileCSS }}
+<link rel="stylesheet" href="{{ $profileCSS.RelPermalink }}">
+
+{{ end }}
+
+{{/* 程式碼區塊修正樣式 - 最後載入以確保覆蓋 */}}
+
+{{ $codeFixCSS := resources.Get "css/extended/code-block-fix.css" }}
+
+{{ if $codeFixCSS }}
+<link rel="stylesheet" href="{{ $codeFixCSS.RelPermalink }}">
+
+{{ end }}
+
+{{/* 導航按鈕樣式 - 在程式碼修正之後載入 */}}
+
+{{ $navButtonsCSS := resources.Get "css/extended/navigation-buttons.css" }}
+
+{{ if $navButtonsCSS }}
+<link rel="stylesheet" href="{{ $navButtonsCSS.RelPermalink }}">
+
+{{ end }}
+
+{{ $tocJS := resources.Get "js/toc-sidebar.js" }}
+
+{{ if $tocJS }}
+<script defer src="{{ $tocJS.RelPermalink }}"></script>
+
+{{ end }}
+
 {{/* Schema.org 結構化資料 */}}
 <script type="application/ld+json">
   {
