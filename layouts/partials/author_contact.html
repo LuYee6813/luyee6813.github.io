@@ -1,0 +1,17 @@
+{{- if .Site.Params.socialIcons }}
+<div class="author-contact" style="margin-top: 2rem; padding: 1.5rem; border-top: 1px solid var(--border); text-align: center;">
+  <h4 style="margin-bottom: 1rem; color: var(--primary);">聯絡作者</h4>
+  <div class="social-icons" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+    {{- range .Site.Params.socialIcons }}
+    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer me" title="{{ .title }}" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: var(--theme); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--primary); transition: all 0.3s ease;">
+      {{- partial "svg.html" (dict "ctx" $ "name" .name) }}
+      <span style="margin-left: 0.5rem;">
+        {{ .name }}</span>
+    </a>
+    {{- end }}
+  </div>
+  <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--secondary);">
+    歡迎透過以上方式與我交流資安技術與 CTF 心得！
+  </p>
+</div>
+{{- end }}

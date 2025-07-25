@@ -1,0 +1,53 @@
+{{- define "main" }}
+
+<article class="post-single">
+  {{- partial "breadcrumbs.html" . }}
+  <header class="post-header">
+    {{- partial "post_meta.html" . }}
+    <h1 class="post-title entry-hint-parent">
+      {{ .Title }}
+      {{- with .Description }}
+      <span class="entry-hint" title="{{ . }}">
+        {{ . }}</span>
+      {{- end }}
+    </h1>
+    {{- if .Params.cover.image }}
+    {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
+    {{- end }}
+  </header>
+  {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden }}
+  {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
+  {{- if (.Param "ShowToc") }}
+  {{- partial "toc.html" . }}
+  {{- end }}
+  {{- if .Content }}
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}
+    {{ .Content }}
+    {{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer">
+    {{- if .Params.tags }}
+    <ul class="post-tags">
+      {{- range ($.GetTerms "tags") }}
+      <li><a href="{{ .Permalink }}">
+          {{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+    {{- if (.Param "ShowPostNavLinks") }}
+    {{- partial "post_nav_links.html" . }}
+    {{- end }}
+    {{- if (.Param "ShowShareButtons") }}
+    {{- partial "share_icons.html" . -}}
+    {{- end }}
+  </footer>
+  {{/* 在這裡添加聯絡資訊 */}}
+  {{- partial "author_contact.html" . }}
+
+</article>
+{{- end }}{{/* end main */}}

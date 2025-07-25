@@ -32,7 +32,7 @@ defaultTheme = "dark"
 disableThemeToggle = true
 
 ShowReadingTime = true
-ShowShareButtons = false
+ShowShareButtons = true
 ShowPostNavLinks = true
 ShowBreadCrumbs = true
 ShowCodeCopyButtons = true
@@ -45,7 +45,8 @@ comments = false
 hidemeta = false
 hideSummary = false
 showtoc = true
-tocopen = true
+tocopen = false
+ShowAuthor = true
 
 [params.assets]
 favicon = "/favicon.ico"
@@ -74,9 +75,25 @@ Title = "Welcome to #!/bin/hack"
 Content = "Cybersecurity Research, CTF Writeups, and Penetration Testing Adventures"
 
 [[params.socialIcons]]
+name = "X"
+title = "View Social Media on X"
+url = "https://x.com/yee6813"
+
+[[params.socialIcons]]
 name = "github"
 title = "View Source on Github"
 url = "https://github.com/luyee6813"
+
+[[params.socialIcons]]
+name = "Telegram"
+title = "Contact on Telegram"
+url = "https://t.me/luyee6813"
+
+[[params.socialIcons]]
+name = "LinkedIn"
+title = "View Profile on LinkedIn"
+url = "https://www.linkedin.com/in/luyee6813/"
+
 
 [[params.socialIcons]]
 name = "email"
