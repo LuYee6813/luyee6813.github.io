@@ -1,7 +1,7 @@
 ---
 title: "協助臺科大建置IEC 62443-3-3認證場域之心得分享"
 date: 2024-07-05
-categories: [OT Security]
+categories: [工控資安]
 tags: [IEC62443]
 ---
 

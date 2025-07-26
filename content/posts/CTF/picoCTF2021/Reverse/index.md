@@ -3,7 +3,6 @@ title: "picoCTF 2021 reverse write-up"
 date: 2024-01-30
 categories: [CTF]
 tags: [picoCTF2021]
-ShowToc: true
 TocOpen: false
 ---
 

@@ -1,5 +1,7 @@
 ---
 title: "關於我"
 url: "/about/"
-showtoc: false
+ShowToc: false
 ---
+
+我是綠血液(LuYee)

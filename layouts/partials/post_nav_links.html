@@ -1,0 +1,112 @@
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- if and (gt (len $pages) 1) (in $pages . ) }}
+
+{{- /* Special handling for Modbus TCP series */ -}}
+{{- $isModbusSeries := false -}}
+{{- if and .Params.slug (hasPrefix .Params.slug "modbus-tcp-series-") -}}
+{{- $isModbusSeries = true -}}
+{{- end -}}
+
+{{- if $isModbusSeries -}}
+{{- /* Custom navigation for Modbus TCP series based on slug */ -}}
+{{- $currentSlug := .Params.slug -}}
+{{- $seriesNumber := 0 -}}
+{{- if eq $currentSlug "modbus-tcp-series-01-basics" -}}
+
+{{ $seriesNumber = 1 }}{{- end -}}
+{{- if eq $currentSlug "modbus-tcp-series-02-function-codes" -}}
+
+{{ $seriesNumber = 2 }}{{- end -}}
+{{- if eq $currentSlug "modbus-tcp-series-03-data-model" -}}
+
+{{ $seriesNumber = 3 }}{{- end -}}
+{{- if eq $currentSlug "modbus-tcp-series-04-error-handling" -}}
+
+{{ $seriesNumber = 4 }}{{- end -}}
+{{- if eq $currentSlug "modbus-tcp-series-05-security-threats" -}}
+
+{{ $seriesNumber = 5 }}{{- end -}}
+{{- if eq $currentSlug "modbus-tcp-series-06-security-defense" -}}
+
+{{ $seriesNumber = 6 }}{{- end -}}
+
+{{- $prevSlug := "" -}}
+{{- $nextSlug := "" -}}
+
+{{- if eq $seriesNumber 2 -}}
+
+{{ $prevSlug = "modbus-tcp-series-01-basics" }}
+
+{{ $nextSlug = "modbus-tcp-series-03-data-model" }}{{- end -}}
+{{- if eq $seriesNumber 1 -}}
+
+{{ $nextSlug = "modbus-tcp-series-02-function-codes" }}{{- end -}}
+{{- if eq $seriesNumber 3 -}}
+
+{{ $prevSlug = "modbus-tcp-series-02-function-codes" }}
+
+{{ $nextSlug = "modbus-tcp-series-04-error-handling" }}{{- end -}}
+{{- if eq $seriesNumber 4 -}}
+
+{{ $prevSlug = "modbus-tcp-series-03-data-model" }}
+
+{{ $nextSlug = "modbus-tcp-series-05-security-threats" }}{{- end -}}
+{{- if eq $seriesNumber 5 -}}
+
+{{ $prevSlug = "modbus-tcp-series-04-error-handling" }}
+
+{{ $nextSlug = "modbus-tcp-series-06-security-defense" }}{{- end -}}
+{{- if eq $seriesNumber 6 -}}
+
+{{ $prevSlug = "modbus-tcp-series-05-security-threats" }}{{- end -}}
+
+<nav class="paginav">
+  {{- if $prevSlug -}}
+  {{- $prevPages := where site.RegularPages ".Params.slug" $prevSlug -}}
+  {{- if gt (len $prevPages) 0 -}}
+  {{- $prevPage := index $prevPages 0 -}}
+  <a class="prev" href="{{ $prevPage.Permalink }}">
+    <span class="title">«
+      {{ i18n "prev_page" }}</span>
+    <br>
+    <span>{{- $prevPage.Name -}}</span>
+  </a>
+  {{- end -}}
+  {{- end -}}
+  {{- if $nextSlug -}}
+  {{- $nextPages := where site.RegularPages ".Params.slug" $nextSlug -}}
+  {{- if gt (len $nextPages) 0 -}}
+  {{- $nextPage := index $nextPages 0 -}}
+  <a class="next" href="{{ $nextPage.Permalink }}">
+    <span class="title">
+      {{ i18n "next_page" }} »</span>
+    <br>
+    <span>{{- $nextPage.Name -}}</span>
+  </a>
+  {{- end -}}
+  {{- end -}}
+</nav>
+
+{{- else -}}
+{{- /* Default navigation for non-series posts */ -}}
+<nav class="paginav">
+  {{- with $pages.Next . }}
+  <a class="prev" href="{{ .Permalink }}">
+    <span class="title">«
+      {{ i18n "prev_page" }}</span>
+    <br>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+  {{- with $pages.Prev . }}
+  <a class="next" href="{{ .Permalink }}">
+    <span class="title">
+      {{ i18n "next_page" }} »</span>
+    <br>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end -}}
+
+{{- end }}
