@@ -146,7 +146,7 @@ url = "/about/"
 weight = 50
 
 [permalinks]
-posts = "/posts/:year/:month/:title/"
+posts = "/posts/:slug/"
 
 [markup]
 [markup.goldmark]
