@@ -7,7 +7,93 @@
 {{- $isModbusSeries = true -}}
 {{- end -}}
 
-{{- if $isModbusSeries -}}
+{{- /* Special handling for IEC 62443 series */ -}}
+{{- $isIEC62443Series := false -}}
+{{- if and .Params.slug (hasPrefix .Params.slug "iec62443-series-") -}}
+{{- $isIEC62443Series = true -}}
+{{- end -}}
+
+{{- if $isIEC62443Series -}}
+{{- /* Custom navigation for IEC 62443 series based on slug */ -}}
+{{- $currentSlug := .Params.slug -}}
+{{- $seriesNumber := 0 -}}
+{{- if eq $currentSlug "iec62443-series-01-introduction-and-basics" -}}
+
+{{ $seriesNumber = 1 }}{{- end -}}
+{{- if eq $currentSlug "iec62443-series-02-risk-assessment-and-sl-selection" -}}
+
+{{ $seriesNumber = 2 }}{{- end -}}
+{{- if eq $currentSlug "iec62443-series-03-foundational-requirements-in-practice" -}}
+
+{{ $seriesNumber = 3 }}{{- end -}}
+{{- if eq $currentSlug "iec62443-series-04-deep-dive-into-security-assurance-requirements" -}}
+
+{{ $seriesNumber = 4 }}{{- end -}}
+{{- if eq $currentSlug "iec62443-series-05-how-to-conduct-risk-assessment-like-an-expert" -}}
+
+{{ $seriesNumber = 5 }}{{- end -}}
+{{- if eq $currentSlug "iec62443-series-06-road-to-certification-practical-guide" -}}
+
+{{ $seriesNumber = 6 }}{{- end -}}
+
+{{- $prevSlug := "" -}}
+{{- $nextSlug := "" -}}
+
+{{- if eq $seriesNumber 1 -}}
+
+{{ $nextSlug = "iec62443-series-02-risk-assessment-and-sl-selection" }}{{- end -}}
+{{- if eq $seriesNumber 2 -}}
+
+{{ $prevSlug = "iec62443-series-01-introduction-and-basics" }}
+
+{{ $nextSlug = "iec62443-series-03-foundational-requirements-in-practice" }}{{- end -}}
+{{- if eq $seriesNumber 3 -}}
+
+{{ $prevSlug = "iec62443-series-02-risk-assessment-and-sl-selection" }}
+
+{{ $nextSlug = "iec62443-series-04-deep-dive-into-security-assurance-requirements" }}{{- end -}}
+{{- if eq $seriesNumber 4 -}}
+
+{{ $prevSlug = "iec62443-series-03-foundational-requirements-in-practice" }}
+
+{{ $nextSlug = "iec62443-series-05-how-to-conduct-risk-assessment-like-an-expert" }}{{- end -}}
+{{- if eq $seriesNumber 5 -}}
+
+{{ $prevSlug = "iec62443-series-04-deep-dive-into-security-assurance-requirements" }}
+
+{{ $nextSlug = "iec62443-series-06-road-to-certification-practical-guide" }}{{- end -}}
+{{- if eq $seriesNumber 6 -}}
+
+{{ $prevSlug = "iec62443-series-05-how-to-conduct-risk-assessment-like-an-expert" }}{{- end -}}
+
+<nav class="paginav">
+  {{- if $prevSlug -}}
+  {{- $prevPages := where site.RegularPages ".Params.slug" $prevSlug -}}
+  {{- if gt (len $prevPages) 0 -}}
+  {{- $prevPage := index $prevPages 0 -}}
+  <a class="prev" href="{{ $prevPage.Permalink }}">
+    <span class="title">«
+      {{ i18n "prev_page" }}</span>
+    <br>
+    <span>{{- $prevPage.Name -}}</span>
+  </a>
+  {{- end -}}
+  {{- end -}}
+  {{- if $nextSlug -}}
+  {{- $nextPages := where site.RegularPages ".Params.slug" $nextSlug -}}
+  {{- if gt (len $nextPages) 0 -}}
+  {{- $nextPage := index $nextPages 0 -}}
+  <a class="next" href="{{ $nextPage.Permalink }}">
+    <span class="title">
+      {{ i18n "next_page" }} »</span>
+    <br>
+    <span>{{- $nextPage.Name -}}</span>
+  </a>
+  {{- end -}}
+  {{- end -}}
+</nav>
+
+{{- else if $isModbusSeries -}}
 {{- /* Custom navigation for Modbus TCP series based on slug */ -}}
 {{- $currentSlug := .Params.slug -}}
 {{- $seriesNumber := 0 -}}

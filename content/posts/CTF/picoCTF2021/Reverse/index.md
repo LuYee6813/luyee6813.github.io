@@ -1,29 +1,10 @@
 ---
-title: "picoCTF 2021 reverse write-up"
+title: "picoCTF 2021 Reverse Write-up"
 date: 2024-01-30
 categories: [CTF]
 tags: [picoCTF2021]
 TocOpen: false
 ---
-
-```javascript
-''.join([chr((ord(flag[i]) << 8) + ord(flag[i + 1])) for i in range(0, len(flag), 2)])
-```
-
-寫一個程式把它解密
-
-```javascript
-encode_flag = open("enc").read()
-flag = ""
-for i in range(0, len(encode_flag)):
-    character1 = chr((ord(encode_flag[i]) >> 8))
-    character2 = chr(encode_flag[i].encode('utf-16be')[-1])
-    flag += character1
-    flag += character2
-print(flag)
-```
-
-`Flag: picoCTF{16_bits_inst34d_of_8_26684c20}`
 
 ## keygenme-py \[30 points\]
 

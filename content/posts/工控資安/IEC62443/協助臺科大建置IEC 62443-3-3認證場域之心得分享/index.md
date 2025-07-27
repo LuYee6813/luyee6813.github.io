@@ -5,6 +5,8 @@ categories: [工控資安]
 tags: [IEC62443]
 ---
 
+![alt text](IEC62443-3-3通過證書.jpg)
+
 ## 前言
 
 近年來，隨著工業 4.0 與智慧製造的浪潮，營運技術 (Operational Technology, OT) 與資訊技術 (Information Technology, IT) 的融合已是不可逆的趨勢。然而，這也使得過去相對封閉的工業控制系統 (Industrial Control Systems, IACS) 面臨了前所未有的資安威脅。在這樣的大背景下，**IEC 62443** 標準無疑成為了全球公認最完整、最權威的工控資安框架。
