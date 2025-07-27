@@ -1,8 +1,64 @@
-/* 導航按鈕 HTB 主題樣式 */
+/* 導航按鈕 HTB 主題樣式 - 清潔版本 */
+
+/* 列表頁面分頁樣式 */
+.page-footer {
+    margin: 40px 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.pagination {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: var(--htb-bg-darker, #010409) !important;
+    border: 1px solid rgba(159, 239, 0, 0.3) !important;
+    border-radius: 8px !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+    flex-wrap: nowrap !important;
+}
+
+.pagination a,
+.pagination .current {
+    color: var(--htb-green, #9fef00) !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    min-width: 40px !important;
+    text-align: center !important;
+    display: inline-block !important;
+    border: none !important;
+    background: transparent !important;
+    line-height: 1.4 !important;
+    font-size: 14px !important;
+}
+
+.pagination a:hover {
+    background: rgba(159, 239, 0, 0.1) !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 8px var(--htb-green, #9fef00) !important;
+    transform: translateY(-1px) !important;
+}
+
+.pagination .current {
+    background: var(--htb-green, #9fef00) !important;
+    color: var(--htb-bg-darker, #010409) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 10px rgba(159, 239, 0, 0.3) !important;
+}
+
+.pagination .prev,
+.pagination .next {
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+}
 
 /* 文章導航 (Next/Prev) */
 .paginav {
-    background: var(--htb-bg-darker) !important;
+    background: var(--htb-bg-darker, #010409) !important;
     border: 1px solid rgba(159, 239, 0, 0.3) !important;
     border-radius: 8px !important;
     margin: 30px 0 !important;
@@ -14,7 +70,7 @@
 
 .paginav a {
     background: transparent !important;
-    color: var(--htb-green) !important;
+    color: var(--htb-green, #9fef00) !important;
     padding: 16px 20px !important;
     border-radius: 8px !important;
     transition: all 0.3s ease !important;
@@ -26,7 +82,7 @@
 .paginav a:hover {
     background: rgba(159, 239, 0, 0.1) !important;
     color: #ffffff !important;
-    text-shadow: 0 0 8px var(--htb-green) !important;
+    text-shadow: 0 0 8px var(--htb-green, #9fef00) !important;
 }
 
 .paginav .title {
@@ -57,6 +113,24 @@
 
 /* 響應式設計 */
 @media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        padding: 12px 16px !important;
+    }
+    
+    .pagination a,
+    .pagination .current {
+        padding: 6px 10px !important;
+        min-width: 36px !important;
+        font-size: 14px !important;
+    }
+    
+    .pagination .prev,
+    .pagination .next {
+        padding: 6px 12px !important;
+    }
+    
     .paginav {
         flex-direction: column !important;
         gap: 8px !important;
@@ -74,10 +148,10 @@
     }
 }
 
-/* 標籤樣式也一併修正 */
+/* 標籤樣式 */
 .post-tags a {
-    background: var(--htb-bg-darker) !important;
-    color: var(--htb-green) !important;
+    background: var(--htb-bg-darker, #010409) !important;
+    color: var(--htb-green, #9fef00) !important;
     border: 1px solid rgba(159, 239, 0, 0.3) !important;
     border-radius: 20px !important;
     padding: 6px 16px !important;
@@ -92,35 +166,8 @@
 .post-tags a:hover {
     background: rgba(159, 239, 0, 0.1) !important;
     color: #ffffff !important;
-    border-color: var(--htb-green) !important;
-    text-shadow: 0 0 6px var(--htb-green) !important;
+    border-color: var(--htb-green, #9fef00) !important;
+    text-shadow: 0 0 6px var(--htb-green, #9fef00) !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 2px 8px rgba(159, 239, 0, 0.2) !important;
-}
-
-/* 分享按鈕樣式 */
-.share-buttons {
-    background: var(--htb-bg-darker) !important;
-    border: 1px solid rgba(159, 239, 0, 0.3) !important;
-    border-radius: 8px !important;
-    padding: 16px !important;
-}
-
-.share-buttons a {
-    background: rgba(159, 239, 0, 0.1) !important;
-    color: var(--htb-green) !important;
-    border: 1px solid rgba(159, 239, 0, 0.3) !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
-    transition: all 0.3s ease !important;
-    text-decoration: none !important;
-}
-
-.share-buttons a:hover {
-    background: rgba(159, 239, 0, 0.2) !important;
-    color: #ffffff !important;
-    border-color: var(--htb-green) !important;
-    text-shadow: 0 0 6px var(--htb-green) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 3px 10px rgba(159, 239, 0, 0.3) !important;
 }

@@ -225,21 +225,10 @@
     line-height: 1.6;
 }
 
-/* Profile 區域在混合模式下的調整 */
-.profile {
-    margin-bottom: 2rem;
-    background: rgba(13, 17, 23, 0.8);
-    border-radius: 15px;
-    border: 1px solid rgba(159, 239, 0, 0.2);
-}
+/* Profile 區域在混合模式下的調整 - 與 profile-enhancements.css 整合 */
+/* 移除重複樣式，保留在 profile-enhancements.css 中統一管理 */
 
-/* 增強主頁的整體視覺層次 */
-.main {
-    background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(1, 4, 9, 0.9) 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-top: 1rem;
-}
+/* 增強主頁的整體視覺層次 - 移至 htb-style.css 統一管理 */
 
 /* HTB 風格表格樣式 */
 table {

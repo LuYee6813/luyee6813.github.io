@@ -15,8 +15,13 @@
 .profile {
     text-align: center !important;
     padding: 2rem !important;
-    min-height: auto !important; /* 移除固定高度 */
-    height: auto !important; /* 自適應高度 */
+    min-height: auto !important;
+    height: auto !important;
+}
+
+/* 調整 profile_inner 的間距 */
+.profile .profile_inner {
+    gap: 6px !important;
 }
 
 /* 移除 first-entry 的全螢幕高度 */
@@ -31,6 +36,7 @@
     min-height: auto !important;
 }
 
+/* 標題樣式 */
 .profile .profile_inner h1 {
     background: linear-gradient(45deg, #9fef00, #7fb800) !important;
     -webkit-background-clip: text !important;
@@ -40,47 +46,21 @@
     margin-bottom: 0.5rem !important;
 }
 
+/* 副標題樣式 */
 .profile .profile_inner .subtitle {
     color: var(--secondary) !important;
     font-style: italic !important;
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 0.8rem !important;
 }
 
-/* 按鈕美化 */
+/* 完全隱藏按鈕區域，因為所有按鈕都被隱藏了 */
 .profile .buttons {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 1rem !important;
-    margin-top: 1.5rem !important;
-    flex-wrap: wrap !important;
-}
-
-/* 隱藏重複的導航按鈕 */
-.profile .buttons .button:is([href*="/posts/"], [href*="/archives/"], [href*="/about/"]) {
     display: none !important;
 }
 
-.profile .buttons .button {
-    background: rgba(159, 239, 0, 0.1) !important;
-    border: 1px solid rgba(159, 239, 0, 0.3) !important;
-    color: var(--primary) !important;
-    padding: 0.75rem 1.5rem !important;
-    border-radius: 25px !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    font-weight: 500 !important;
-}
-
-.profile .buttons .button:hover {
-    background: rgba(159, 239, 0, 0.2) !important;
-    border-color: #9fef00 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(159, 239, 0, 0.2) !important;
-}
-
-/* 社交圖標在 Profile Mode 下的樣式 */
+/* 社交圖標樣式 */
 .profile .social-icons {
-    margin-top: 2rem !important;
+    margin-top: 1.2rem !important;
     display: flex !important;
     justify-content: center !important;
     gap: 1rem !important;
