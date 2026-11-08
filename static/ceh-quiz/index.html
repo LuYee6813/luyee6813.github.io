@@ -3,7 +3,14 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" id="tc" content="#FFFFFF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CEH 題庫">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <meta name="description" content="CEH v13 練習題庫：英文原題與中文詳解，可依考試九大領域與題目長度篩選。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v9c0 7.5 5.1 12.6 12 14 6.9-1.4 12-6.5 12-14V7z' fill='%2312586E'/%3E%3Cpath d='M16 5.2 7 8.9v7.1c0 6 4 10.2 9 11.5 5-1.3 9-5.5 9-11.5V8.9z' fill='%23EBEFF3'/%3E%3Cpath d='M11 16.2l3.4 3.4L21 13' fill='none' stroke='%2312586E' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <title>CEH v13 分段題庫</title>
@@ -81,7 +88,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .ic[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
 
 /* ---------- progress rail ---------- */
-.rail{height:3px;background:var(--sunk);position:sticky;top:57px;z-index:19}
+.rail{height:3px;background:var(--sunk)}
 .rail div{height:100%;background:var(--accent);width:0;transition:width .25s ease}
 
 /* ---------- layout ---------- */
@@ -152,6 +159,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .btn:disabled{opacity:.4;cursor:default}
 .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.pri:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+:root[data-theme="dark"] .btn.pri{color:#0D141B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.pri{color:#0D141B}}
 .keys{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);
   letter-spacing:.03em;font-variant-numeric:tabular-nums}
 .keys em{font-style:normal;opacity:.72;margin-left:14px}
@@ -186,6 +195,83 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .lnk:hover{border-bottom-color:var(--accent)}
 .done{text-align:center;padding:60px 24px}
 .done .big{font-size:44px;color:var(--accent)}
+/* ---------- desktop: mobile-only pieces stay out of the way ---------- */
+.filters{display:contents}
+.mpos,.mbtns,.sheet-h,.scrim{display:none}
+
+/* ---------- phone: full-screen app layout ---------- */
+@media (max-width:720px){
+  html{scroll-padding-top:64px;scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  body{background:var(--surface)}
+  .bar{padding-top:env(safe-area-inset-top)}
+  .bar-in{padding:8px max(14px,env(safe-area-inset-left)) 8px max(14px,env(safe-area-inset-right));
+    gap:8px;flex-wrap:nowrap}
+  .brand{min-width:0}
+  .brand b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand #srcline{display:none}
+  .mpos{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    font-variant-numeric:tabular-nums;letter-spacing:.03em}
+  .mbtns{display:flex;gap:6px;flex:none}
+  .mbtns .ic{padding:7px 12px;font-size:13.5px;position:relative}
+  .mbtns .ic.on::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;
+    border-radius:50%;background:var(--accent)}
+
+  /* bottom sheets: filters and stats */
+  .scrim{display:block;position:fixed;inset:0;z-index:40;background:rgba(8,14,20,.45);
+    opacity:0;pointer-events:none;transition:opacity .2s}
+  body.sheet-f .scrim,body.sheet-s .scrim{opacity:1;pointer-events:auto}
+  /* the bar is a stacking context holding the scrim and the filter sheet: lift it over the bottom nav */
+  body.sheet-f .bar,body.sheet-s .bar{z-index:45}
+  body.sheet-f,body.sheet-s{overflow:hidden}
+  .filters,.side{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;z-index:50;
+    max-height:82vh;overflow-y:auto;overscroll-behavior:contain;background:var(--surface);
+    border-radius:16px 16px 0 0;box-shadow:0 -10px 40px -10px rgba(0,0,0,.35);
+    padding:0 16px calc(18px + env(safe-area-inset-bottom));gap:14px;
+    transform:translateY(105%);transition:transform .24s ease;visibility:hidden}
+  body.sheet-f .filters,body.sheet-s .side{transform:none;visibility:visible}
+  .sheet-h{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;
+    background:var(--surface);padding:14px 0 8px;margin-bottom:-4px;z-index:1}
+  .sheet-h b{font-size:15px}
+  .sheet-h::before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;
+    margin-left:-18px;border-radius:2px;background:var(--line)}
+  .seg{display:grid;grid-template-columns:repeat(4,1fr)}
+  .seg button{flex-direction:column;gap:2px;padding:8px 4px;font-size:13.5px}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tools .ic{padding:11px 10px;font-size:14px;text-align:center;justify-content:center}
+  .tools .sel{grid-column:1/-1;max-width:none;text-align:left;font-size:15px}
+  .tools .lnk-classic{grid-column:1/-1}
+  .side{position:fixed;top:auto}
+  .side .panel{border-radius:10px}
+  .jump input{font-size:16px;padding:9px 10px}
+  .wrong{gap:6px;max-height:none}
+  .wrong button{font-size:13px;padding:6px 11px}
+
+  /* question: edge to edge */
+  .wrap{display:block;padding:0 0 calc(84px + env(safe-area-inset-bottom))}
+  .card{border:0;border-radius:0;box-shadow:none}
+  .meta{padding:10px 18px;gap:8px}
+  .meta .ce{display:none}
+  .stem{padding:20px 18px 6px;font-size:17px;line-height:1.78;max-width:none}
+  .legend{padding:4px 18px 12px;gap:6px 12px;font-size:11px}
+  .opts{padding:10px 12px 20px;gap:9px}
+  .opt{padding:13px 14px;font-size:16px;line-height:1.6;border-radius:10px}
+  .opt .k{width:26px;height:26px;font-size:13px;margin-top:0}
+  .exp.open{padding:18px 18px 28px}
+  .exp .body{font-size:16px;line-height:1.95;padding-left:14px}
+
+  /* answer controls pinned to the bottom */
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;margin:0;gap:8px;flex-wrap:nowrap;
+    background:var(--surface);border-top:1px solid var(--line);
+    padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+  .nav .btn{flex:1;min-height:46px;padding:10px 8px;font-size:15px;order:1}
+  .nav .btn.mid{order:2}
+  .nav .btn.pri{order:3}
+  .nav .keys{display:none}
+  .done{padding:80px 24px}
+}
+@media (max-width:720px) and (hover:none){
+  .opt:hover:not(:disabled){border-color:var(--line);background:var(--surface)}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -193,7 +279,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <body>
 <div class="bar">
   <div class="bar-in">
-    <div class="brand"><b>CEH v13 分段題庫</b><span id="srcline">312-50v13 &middot; 797 題</span></div>
+    <div class="brand"><b>CEH v13 分段題庫</b><span id="srcline">312-50v13 &middot; 797 題</span><span class="mpos" id="mpos"></span></div>
+    <div class="mbtns">
+      <button class="ic" id="openF" aria-controls="filters" aria-expanded="false">篩選</button>
+      <button class="ic" id="openS" aria-controls="side" aria-expanded="false">統計</button>
+    </div>
+    <div class="filters" id="filters">
+    <div class="sheet-h"><b>篩選與設定</b><button class="ic" data-close>完成</button></div>
     <div class="seg" id="tiers"></div>
     <div class="tools">
       <select class="ic sel" id="dom" title="依考試九大領域篩選"></select>
@@ -205,16 +297,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <button class="ic" id="theme">主題</button>
       <a class="ic lnk-classic" href="classic/" title="6 個題庫共 1461 題，含多帳號錯題複習">舊版題庫</a>
     </div>
+    </div>
   </div>
+  <div class="rail"><div id="railfill"></div></div>
+  <div class="scrim" id="scrim"></div>
 </div>
-<div class="rail"><div id="railfill"></div></div>
 
 <div class="wrap">
   <main>
     <div id="stage"></div>
     <div class="nav" id="nav"></div>
   </main>
-  <aside class="side">
+  <aside class="side" id="side">
+    <div class="sheet-h"><b>統計與跳題</b><button class="ic" data-close>關閉</button></div>
     <div class="panel">
       <h4>本次作答</h4>
       <div class="big" id="pct">—</div>
@@ -266,7 +361,10 @@ function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
 
 /* ---- theme ---- */
 function applyTheme(){ if(S.theme) document.documentElement.setAttribute('data-theme',S.theme);
-  else document.documentElement.removeAttribute('data-theme'); }
+  else document.documentElement.removeAttribute('data-theme');
+  const dark = S.theme ? S.theme==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
+  document.getElementById('tc').setAttribute('content', dark?'#151F29':'#FFFFFF'); }
+matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',()=>{ if(!S.theme) applyTheme(); });
 applyTheme();
 document.getElementById('theme').onclick=()=>{
   const cur=S.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
@@ -315,6 +413,8 @@ function syncBar(){
   const ds=document.getElementById('dom');
   ds.value=S.dom||'all'; ds.classList.toggle('on',(S.dom||'all')!=='all');
   document.getElementById('onlywrong').setAttribute('aria-pressed',String(S.onlywrong));
+  document.getElementById('openF').classList.toggle('on',
+    (S.dom||'all')!=='all' || !!S.snap || !!S.onlywrong || !!S.shuffle || !!S.reveal);
 }
 document.getElementById('shuffle').onclick=()=>{S.shuffle=!S.shuffle;save();syncBar();rebuild(deck[pos]&&deck[pos].n);};
 document.getElementById('reveal').onclick=()=>{S.reveal=!S.reveal;peek=false;save();render();};
@@ -358,7 +458,7 @@ function render(){
   c.innerHTML=`
     <div class="meta">
       <span class="qno">Q${q.n}</span><span class="dot"></span>
-      <span class="cat">${esc((DOMS.find(x=>x[0]===DMAP[q.n])||[,q.ce])[1])} · ${esc(q.ce)}</span><span class="dot"></span>
+      <span class="cat">${esc((DOMS.find(x=>x[0]===DMAP[q.n])||[,q.ce])[1])}<span class="ce"> · ${esc(q.ce)}</span></span><span class="dot"></span>
       <span class="gauge ${tl.g}" title="${tl.label}"><i></i><i></i><i></i></span>
       ${q.s?`<span class="snapbadge">${q.s==='tool'?'工具題':'名詞題'}</span>`:''}
       <button class="flag" id="flag" data-on="${S.wrong[q.n]?1:0}">${S.wrong[q.n]?'已標記錯題':'標記錯題'}</button>
@@ -417,15 +517,17 @@ function drawNav(){
   nav.innerHTML='';
   const mk=(t,fn,cls,dis)=>{const b=document.createElement('button');
     b.className='btn'+(cls?' '+cls:'');b.textContent=t;b.disabled=!!dis;b.onclick=fn;nav.appendChild(b);return b;};
-  mk('上一題',()=>{pos--;peek=false;render();},'',pos===0);
-  mk('下一題',()=>{pos++;peek=false;render();},'pri',pos>=deck.length-1);
+  mk('上一題',()=>go(-1),'',pos===0);
+  mk('下一題',()=>go(1),'pri',pos>=deck.length-1);
   const q=deck[pos];
-  if(S.ans[q.n]!==undefined) mk('重做這題',()=>{delete S.ans[q.n];peek=false;save();render();});
+  if(S.ans[q.n]!==undefined) mk('重做這題',()=>{delete S.ans[q.n];peek=false;save();render();},'mid');
   else if(!S.reveal && !peek) mk('看答案',()=>{peek=true;render();
-    document.getElementById('exp').scrollIntoView({block:'nearest',behavior:'smooth'});});
+    document.getElementById('exp').scrollIntoView({block:'nearest',behavior:'smooth'});},'mid');
   const k=document.createElement('span'); k.className='keys';
   k.innerHTML=`${pos+1} / ${deck.length}<em>A–H 作答　Enter 看答案／下一題　← → 換題</em>`;
   nav.appendChild(k);
+  const tl=TIERS.find(t=>t.k===S.tier);
+  document.getElementById('mpos').textContent=`${tl?tl.label:''} · ${pos+1} / ${deck.length}`;
   document.getElementById('railfill').style.width=((pos+1)/deck.length*100)+'%';
 }
 function stats(){
@@ -461,9 +563,49 @@ function goto(n){
   const q=DATA.find(x=>x.n===n); if(!q) return;
   if(S.tier!=='all' && q.t!==S.tier){ S.tier=q.t; }
   if(S.onlywrong && !S.wrong[n]) S.onlywrong=false;
+  closeSheets();
   save(); rebuild(n);
   window.scrollTo({top:0,behavior:'smooth'});
 }
+/* move to the previous/next question; jump back to the top of the new one */
+function go(d){
+  const np=pos+d; if(np<0||np>=deck.length) return;
+  pos=np; peek=false; render();
+  if(stage.getBoundingClientRect().top<0) window.scrollTo({top:0});
+}
+
+/* ---- phone sheets (filters / stats) ---- */
+function closeSheets(){
+  document.body.classList.remove('sheet-f','sheet-s');
+  document.getElementById('openF').setAttribute('aria-expanded','false');
+  document.getElementById('openS').setAttribute('aria-expanded','false');
+}
+function openSheet(which){
+  closeSheets();
+  document.body.classList.add(which==='f'?'sheet-f':'sheet-s');
+  document.getElementById(which==='f'?'openF':'openS').setAttribute('aria-expanded','true');
+}
+document.getElementById('openF').onclick=()=>openSheet('f');
+document.getElementById('openS').onclick=()=>openSheet('s');
+document.getElementById('scrim').onclick=closeSheets;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheets);
+
+/* ---- swipe left/right on the question to change it ---- */
+(function(){
+  let x0=null,y0=0,t0=0;
+  stage.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1){x0=null;return;}
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now();
+  },{passive:true});
+  stage.addEventListener('touchend',e=>{
+    if(x0===null) return;
+    const dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
+    x0=null;
+    if(Date.now()-t0>700 || Math.abs(dx)<70 || Math.abs(dx)<Math.abs(dy)*1.8) return;
+    if(String(getSelection())) return;
+    go(dx<0?1:-1);
+  },{passive:true});
+})();
 document.getElementById('jgo').onclick=()=>{const v=parseInt(document.getElementById('jin').value,10); if(v)goto(v);};
 document.getElementById('jin').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=parseInt(e.target.value,10); if(v)goto(v);}});
 document.getElementById('reset').onclick=()=>{
@@ -471,15 +613,17 @@ document.getElementById('reset').onclick=()=>{
   save(); rebuild();
 };
 addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ closeSheets(); return; }
   if(e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey) return;
-  if(e.key==='ArrowRight'){ if(pos<deck.length-1){pos++;peek=false;render();} return; }
-  if(e.key==='ArrowLeft'){ if(pos>0){pos--;peek=false;render();} return; }
+  if(document.body.classList.contains('sheet-f')||document.body.classList.contains('sheet-s')) return;
+  if(e.key==='ArrowRight'){ go(1); return; }
+  if(e.key==='ArrowLeft'){ go(-1); return; }
   if(e.key==='Enter'){
     e.preventDefault();
     const cur=deck[pos]; if(!cur) return;
     const seen = S.ans[cur.n]!==undefined || S.reveal || peek;
     if(!seen){ peek=true; render(); }
-    else if(pos<deck.length-1){ pos++; peek=false; render(); }
+    else go(1);
     return;
   }
   if(S.reveal||peek) return;
