@@ -144,8 +144,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 .exp .body{border-left:2px solid var(--accent);padding-left:16px;font-family:var(--serif);
   color:var(--ink-2);font-size:15.5px;line-height:2;white-space:pre-wrap;text-wrap:pretty}
+.vrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.vrow .ic{padding:4px 11px}
 .verdict{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;
-  padding:5px 12px;border-radius:20px;margin-bottom:14px}
+  padding:5px 12px;border-radius:20px}
 .verdict.y{background:var(--ok-soft);color:var(--ok)}
 .verdict.n{background:var(--bad-soft);color:var(--bad)}
 .verdict.r{background:var(--accent-soft);color:var(--accent-ink)}
@@ -219,16 +221,21 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   /* bottom sheets: filters and stats */
   .scrim{display:block;position:fixed;inset:0;z-index:40;background:rgba(8,14,20,.45);
     opacity:0;pointer-events:none;transition:opacity .2s}
-  body.sheet-f .scrim,body.sheet-s .scrim{opacity:1;pointer-events:auto}
+  body.sheet-f .scrim,body.sheet-s .scrim,body.sheet-e .scrim{opacity:1;pointer-events:auto}
   /* the bar is a stacking context holding the scrim and the filter sheet: lift it over the bottom nav */
-  body.sheet-f .bar,body.sheet-s .bar{z-index:45}
-  body.sheet-f,body.sheet-s{overflow:hidden}
-  .filters,.side{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;z-index:50;
+  body.sheet-f .bar,body.sheet-s .bar,body.sheet-e .bar{z-index:45}
+  body.sheet-f,body.sheet-s,body.sheet-e{overflow:hidden}
+  .filters,.side,.exp{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;z-index:50;
     max-height:82vh;overflow-y:auto;overscroll-behavior:contain;background:var(--surface);
     border-radius:16px 16px 0 0;box-shadow:0 -10px 40px -10px rgba(0,0,0,.35);
     padding:0 16px calc(18px + env(safe-area-inset-bottom));gap:14px;
-    transform:translateY(105%);transition:transform .24s ease;visibility:hidden}
-  body.sheet-f .filters,body.sheet-s .side{transform:none;visibility:visible}
+    transform:translateY(105%);visibility:hidden;
+    transition:transform .24s ease,visibility 0s linear .24s}
+  body.sheet-f .filters,body.sheet-s .side,.exp.open{transform:none;visibility:visible;
+    transition:transform .24s ease,visibility 0s}
+  .exp,.exp.open{border-top:0;gap:0;max-height:78vh;padding:0 18px calc(24px + env(safe-area-inset-bottom))}
+  .exp .sheet-h{margin-bottom:6px}
+  .exp h3{display:none}
   .sheet-h{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;
     background:var(--surface);padding:14px 0 8px;margin-bottom:-4px;z-index:1}
   .sheet-h b{font-size:15px}
@@ -256,7 +263,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .opts{padding:10px 12px 20px;gap:9px}
   .opt{padding:13px 14px;font-size:16px;line-height:1.6;border-radius:10px}
   .opt .k{width:26px;height:26px;font-size:13px;margin-top:0}
-  .exp.open{padding:18px 18px 28px}
   .exp .body{font-size:16px;line-height:1.95;padding-left:14px}
 
   /* answer controls pinned to the bottom */
@@ -291,7 +297,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <select class="ic sel" id="dom" title="依考試九大領域篩選"></select>
       <button class="ic" id="snap" aria-pressed="false" title="只留下答案是工具名或技術名稱的題目，看懂情境就能秒選">秒答題</button>
       <button class="ic" id="hl" aria-pressed="true" title="標出技術線索與方向詞，淡化地名日期">重點標記</button>
-      <button class="ic" id="reveal" aria-pressed="false" title="直接顯示正解與詳解，不計入作答成績">直接看答案</button>
+      <button class="ic" id="reveal" aria-pressed="false" title="直接標出正解，不計入作答成績；詳解按「看解答」">直接看答案</button>
       <button class="ic" id="shuffle" aria-pressed="false">隨機</button>
       <button class="ic" id="onlywrong" aria-pressed="false">只練錯題</button>
       <button class="ic" id="theme">主題</button>
@@ -383,14 +389,14 @@ function baseDeck(){
   return d;
 }
 function hash(s){ let h=2166136261; for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619);} return h>>>1; }
-let deck=[], pos=0, peek=false;
+let deck=[], pos=0, peek=false, expOpen=false;
 function key(){ return S.tier+':'+(S.dom||'all')+(S.onlywrong?':w':'')+(S.snap?':q':'')+(S.shuffle?':s':''); }
 function rebuild(keepNum){
   deck=baseDeck();
   const want = keepNum ?? S.idx[key()];
   let i = deck.findIndex(q=>q.n===want);
   pos = i>=0 ? i : 0;
-  peek=false;
+  peek=false; closeExp();
   render();
 }
 
@@ -417,7 +423,7 @@ function syncBar(){
     (S.dom||'all')!=='all' || !!S.snap || !!S.onlywrong || !!S.shuffle || !!S.reveal);
 }
 document.getElementById('shuffle').onclick=()=>{S.shuffle=!S.shuffle;save();syncBar();rebuild(deck[pos]&&deck[pos].n);};
-document.getElementById('reveal').onclick=()=>{S.reveal=!S.reveal;peek=false;save();render();};
+document.getElementById('reveal').onclick=()=>{S.reveal=!S.reveal;peek=false;expOpen=false;save();render();};
 document.getElementById('hl').onclick=()=>{S.hl=(S.hl===false);save();render();};
 (function(){
   const sel=document.getElementById('dom');
@@ -493,11 +499,11 @@ function render(){
   drawNav();
   stats();
 }
+/* answering only marks the options; the explanation waits for the 看解答 button */
 function pick(q,i){
   S.ans[q.n]=i;
   if(!q.a.includes(i)) S.wrong[q.n]={c:domName(q.n)}; else delete S.wrong[q.n];
   save(); render();
-  document.getElementById('exp').scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 function showExp(q,given){
   const el=document.getElementById('exp');
@@ -510,8 +516,25 @@ function showExp(q,given){
     head=`<div class="verdict ${right?'y':'n'}">${right?'答對':'答錯'}`
        + `<b>你選 ${LET[given]}${right?'':' · 正解 '+sol}</b></div>`;
   }
-  el.innerHTML=head+`<h3>詳解 &middot; 中文</h3><div class="body">${esc(q.e)}</div>`;
-  el.classList.add('open');
+  const redo = given!==undefined ? `<button class="ic" id="redo">重做這題</button>` : '';
+  el.innerHTML=`<div class="sheet-h"><b>詳解</b><button class="ic" data-close>關閉</button></div>`
+    + `<div class="vrow">${head}${redo}</div>`
+    + `<h3>詳解 &middot; 中文</h3><div class="body">${esc(q.e)}</div>`;
+  if(redo) el.querySelector('#redo').onclick=()=>{
+    delete S.ans[q.n]; peek=false; closeExp(); render(); };
+  el.classList.toggle('open',expOpen);
+}
+function openExp(){
+  const el=document.getElementById('exp'); if(!el||!el.innerHTML) return;
+  expOpen=true; el.classList.add('open'); el.scrollTop=0;
+  document.body.classList.add('sheet-e');
+  drawNav();
+  if(!matchMedia('(max-width:720px)').matches) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function closeExp(){
+  expOpen=false; document.body.classList.remove('sheet-e');
+  const el=document.getElementById('exp'); if(el) el.classList.remove('open');
+  if(deck.length) drawNav();
 }
 function drawNav(){
   nav.innerHTML='';
@@ -520,11 +543,12 @@ function drawNav(){
   mk('上一題',()=>go(-1),'',pos===0);
   mk('下一題',()=>go(1),'pri',pos>=deck.length-1);
   const q=deck[pos];
-  if(S.ans[q.n]!==undefined) mk('重做這題',()=>{delete S.ans[q.n];peek=false;save();render();},'mid');
-  else if(!S.reveal && !peek) mk('看答案',()=>{peek=true;render();
-    document.getElementById('exp').scrollIntoView({block:'nearest',behavior:'smooth'});},'mid');
+  const shown = S.ans[q.n]!==undefined || S.reveal || peek;
+  if(!shown) mk('看答案',()=>{peek=true;render();openExp();},'mid');
+  else if(!expOpen) mk('看解答',openExp,'mid');
+  else mk('收起解答',closeExp,'mid');
   const k=document.createElement('span'); k.className='keys';
-  k.innerHTML=`${pos+1} / ${deck.length}<em>A–H 作答　Enter 看答案／下一題　← → 換題</em>`;
+  k.innerHTML=`${pos+1} / ${deck.length}<em>A–H 作答　Enter 看解答／下一題　← → 換題</em>`;
   nav.appendChild(k);
   const tl=TIERS.find(t=>t.k===S.tier);
   document.getElementById('mpos').textContent=`${tl?tl.label:''} · ${pos+1} / ${deck.length}`;
@@ -570,12 +594,13 @@ function goto(n){
 /* move to the previous/next question; jump back to the top of the new one */
 function go(d){
   const np=pos+d; if(np<0||np>=deck.length) return;
-  pos=np; peek=false; render();
+  pos=np; peek=false; closeExp(); render();
   if(stage.getBoundingClientRect().top<0) window.scrollTo({top:0});
 }
 
 /* ---- phone sheets (filters / stats) ---- */
 function closeSheets(){
+  if(expOpen) closeExp();
   document.body.classList.remove('sheet-f','sheet-s');
   document.getElementById('openF').setAttribute('aria-expanded','false');
   document.getElementById('openS').setAttribute('aria-expanded','false');
@@ -588,13 +613,13 @@ function openSheet(which){
 document.getElementById('openF').onclick=()=>openSheet('f');
 document.getElementById('openS').onclick=()=>openSheet('s');
 document.getElementById('scrim').onclick=closeSheets;
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeSheets);
+document.addEventListener('click',e=>{ if(e.target.closest('[data-close]')) closeSheets(); });
 
 /* ---- swipe left/right on the question to change it ---- */
 (function(){
   let x0=null,y0=0,t0=0;
   stage.addEventListener('touchstart',e=>{
-    if(e.touches.length!==1){x0=null;return;}
+    if(e.touches.length!==1 || e.target.closest('.exp')){x0=null;return;}
     x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now();
   },{passive:true});
   stage.addEventListener('touchend',e=>{
@@ -622,7 +647,8 @@ addEventListener('keydown',e=>{
     e.preventDefault();
     const cur=deck[pos]; if(!cur) return;
     const seen = S.ans[cur.n]!==undefined || S.reveal || peek;
-    if(!seen){ peek=true; render(); }
+    if(!seen){ peek=true; render(); openExp(); }
+    else if(!expOpen) openExp();
     else go(1);
     return;
   }
