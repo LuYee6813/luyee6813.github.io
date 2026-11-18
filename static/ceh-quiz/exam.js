@@ -249,7 +249,7 @@ function drawRun(){
   const n=E.qs.length; E.i=Math.max(0,Math.min(E.i,n-1));
   const qn=E.qs[E.i], q=QMAP.get(qn), given=E.ans[qn];
   const done=E.qs.filter(x=>E.ans[x]!==undefined).length, flags=E.qs.filter(x=>E.flag[x]).length;
-  head('模擬考',`第 ${E.i+1} / ${n} 題 · 已答 ${done}`,
+  head('模擬考',`${E.i+1} / ${n} 題 · 已答 ${done}`,
     (E.end?`<span class="xtimer" title="剩餘時間"></span>`:'')
     +`<button class="ic xmb" data-act="nav">題目表</button><button class="ic" data-act="submit">交卷</button>`);
   $('xrail').style.width=((E.i+1)/n*100)+'%';
@@ -258,7 +258,7 @@ function drawRun(){
       <span class="cat">${esc(dlabel(DMAP[qn]))}</span>
       <button class="flag xflag" data-act="flag" data-on="${E.flag[qn]?1:0}">${E.flag[qn]?'已標記':'標記'}</button></div>
     <div class="stem">${highlight(q.q,E.hl)}</div>
-    <div class="opts">${q.o.map((t,i)=>`<button class="opt${given===i?' sel':''}" data-act="ans" data-i="${i}" aria-pressed="${given===i}">
+    <div class="opts">${q.o.map((t,i)=>`<button class="opt${given===i?' picked':''}" data-act="ans" data-i="${i}" aria-pressed="${given===i}">
       <span class="k">${LET[i]}</span><span class="tx">${esc(t)}</span></button>`).join('')}</div>
   </div>`;
   const last=E.i===n-1;

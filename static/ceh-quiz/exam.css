@@ -65,8 +65,8 @@ body.mode-exam > .bar,body.mode-exam #pwrap{display:none}
 .xclear{background:none;padding:0;margin-top:12px}
 
 /* taking the exam */
-.opt.sel,.opt.sel:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
-.opt.sel .k{background:var(--accent);color:var(--surface)}
+.opt.picked,.opt.picked:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt.picked .k{background:var(--accent);color:var(--surface)}
 .xflag[data-on="1"]{color:var(--warn);border-color:var(--warn);background:var(--warn-soft)}
 .xbadge{font-size:11px;color:var(--warn);background:var(--warn-soft);border-radius:20px;padding:2px 9px}
 .xgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px}
@@ -142,3 +142,5 @@ body.mode-exam > .bar,body.mode-exam #pwrap{display:none}
   .xscore .big{font-size:46px}
 }
 .xdoms .wk[data-d] .l span{color:hsl(var(--dh) var(--ds) var(--dl));font-weight:600}
+#examApp .brand{min-width:0}
+#examApp .brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
