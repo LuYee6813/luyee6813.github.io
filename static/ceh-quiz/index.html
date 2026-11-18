@@ -162,15 +162,17 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.pri:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
 :root[data-theme="dark"] .btn.pri{color:#0D141B}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.pri{color:#0D141B}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="paper"]) .btn.pri{color:#0D141B}}
 .keys{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);
   letter-spacing:.03em;font-variant-numeric:tabular-nums}
 .keys em{font-style:normal;opacity:.72;margin-left:14px}
 @media (max-width:640px){.keys em{display:none}}
 
 /* ---------- sidebar ---------- */
-.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:82px}
-@media (max-width:880px){.side{position:static}}
+.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:calc(var(--barh,64px) + 16px);
+  max-height:calc(100vh - var(--barh,64px) - 32px);overflow-y:auto;overscroll-behavior:contain;padding-bottom:2px}
+.side > *{flex:none}
+@media (max-width:880px){.side{position:static;max-height:none;overflow:visible}}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:15px 16px}
 .panel h4{margin:0 0 12px;font-family:var(--mono);font-size:11px;font-weight:600;
   letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
@@ -197,19 +199,68 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .lnk:hover{border-bottom-color:var(--accent)}
 .done{text-align:center;padding:60px 24px}
 .done .big{font-size:44px;color:var(--accent)}
+/* ---------- 護眼主題：米色紙張底、深棕文字，長時間讀題比較不刺眼 ---------- */
+:root[data-theme="paper"]{color-scheme:light;
+  --bg:#EDE3CC; --surface:#FBF5E6; --surface-2:#F5EDDA; --sunk:#E9DEC3;
+  --ink:#2A2016; --ink-2:#4B3B2A; --muted:#7A6650; --line:#D8C9A8; --line-2:#E8DCC0;
+  --accent:#1E5E66; --accent-soft:#D7E6DD; --accent-ink:#123F45;
+  --ok:#2C6A37; --ok-soft:#DDEBD0; --bad:#A3392A; --bad-soft:#F5D9CC;
+  --warn:#8A5807; --warn-soft:#F2DDAA;
+  --t1:#B8C4A8; --t2:#6F8C6E; --t3:#2F5241;
+  --shadow:0 1px 2px rgba(60,40,10,.08),0 8px 24px -12px rgba(60,40,10,.22);
+}
+
+/* ---------- 領域色：每個考試領域固定一個顏色，當作記憶線索 ---------- */
+:root{--dl:36%;--ds:58%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="paper"]){--dl:70%;--ds:52%}}
+:root[data-theme="dark"]{--dl:70%;--ds:52%}
+[data-d="D1"]{--dh:215} [data-d="D2"]{--dh:150} [data-d="D3"]{--dh:0}
+[data-d="D4"]{--dh:28}  [data-d="D5"]{--dh:275} [data-d="D6"]{--dh:185}
+[data-d="D7"]{--dh:325} [data-d="D8"]{--dh:240} [data-d="D9"]{--dh:48}
+.card[data-d] .meta{box-shadow:inset 4px 0 0 hsl(var(--dh) var(--ds) var(--dl))}
+.card[data-d] .cat{color:hsl(var(--dh) var(--ds) var(--dl));font-weight:600}
+
+/* ---------- 模式切換：練習 / 記憶複習 / 模擬考 ---------- */
+.modes{display:flex;background:var(--sunk);border-radius:8px;padding:3px;gap:2px}
+.modes button,.modes a{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 12px;
+  border-radius:6px;font-size:13px;font-weight:500;color:var(--ink-2);text-decoration:none}
+.modes button:hover,.modes a:hover{color:var(--ink)}
+.modes [aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.modes .ct{font-family:var(--mono);font-size:11px;font-weight:600;color:#fff;background:var(--bad);
+  border-radius:10px;padding:0 6px;line-height:17px;font-variant-numeric:tabular-nums}
+.modes .ct:empty{display:none}
+body.mode-rev #tiers,body.mode-rev #dom,body.mode-rev #snap,body.mode-rev #reveal,
+body.mode-rev #shuffle,body.mode-rev #onlywrong{display:none}
+body.mode-rev #openF.on::after{display:none}
+
+/* ---------- 記憶等級 ---------- */
+.srsbadge{display:inline-block;font-size:11px;font-weight:500;line-height:1.6;border-radius:20px;padding:0 8px;
+  background:var(--sunk);color:var(--ink-2);white-space:nowrap}
+.srsbadge.b0{background:var(--bad-soft);color:var(--bad)}
+.srsbadge.b1,.srsbadge.b2{background:var(--warn-soft);color:var(--warn)}
+.srsbadge.b3,.srsbadge.b4{background:var(--accent-soft);color:var(--accent-ink)}
+.srsbadge.b5,.srsbadge.b6{background:var(--ok-soft);color:var(--ok)}
+.wk .t i.mb0{background:var(--bad)} .wk .t i.mb1,.wk .t i.mb2{background:var(--warn)}
+.wk .t i.mb3,.wk .t i.mb4{background:var(--accent)} .wk .t i.mb5,.wk .t i.mb6{background:var(--ok)}
+.srsline{display:flex;align-items:center;gap:8px;margin:-4px 0 14px;font-size:13px;color:var(--ink-2)}
+
 /* ---------- desktop: mobile-only pieces stay out of the way ---------- */
 .filters{display:contents}
 .mpos,.mbtns,.sheet-h,.scrim{display:none}
 
 /* ---------- phone: full-screen app layout ---------- */
 @media (max-width:720px){
-  html{scroll-padding-top:64px;scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  html{scroll-padding-top:110px;scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom))}
   body{background:var(--surface)}
   .bar{padding-top:env(safe-area-inset-top)}
   .bar-in{padding:8px max(14px,env(safe-area-inset-left)) 8px max(14px,env(safe-area-inset-right));
     gap:8px;flex-wrap:nowrap}
   .brand{min-width:0}
   .brand b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar > .bar-in{flex-wrap:wrap;row-gap:8px}
+  .bar > .bar-in .brand{flex:1 1 0}
+  .modes{order:5;flex:1 1 100%;display:grid;grid-template-columns:repeat(3,1fr)}
+  .modes button,.modes a{padding:7px 6px;font-size:14px}
   .brand #srcline{display:none}
   .mpos{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);
     font-variant-numeric:tabular-nums;letter-spacing:.03em}
@@ -280,12 +331,18 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<link rel="stylesheet" href="exam.css?v=1">
 </head>
 
 <body>
 <div class="bar">
   <div class="bar-in">
     <div class="brand"><b>CEH v13 分段題庫</b><span id="srcline">312-50v13 &middot; 797 題</span><span class="mpos" id="mpos"></span></div>
+    <div class="modes" id="modes" role="group" aria-label="模式">
+      <button data-m="practice" aria-pressed="true">練習</button>
+      <button data-m="rev" aria-pressed="false" title="依記憶曲線排出今天該複習的題目">記憶複習<span class="ct" id="dueCt"></span></button>
+      <a href="#exam" title="依題庫組題，計時作答，交卷後計分">模擬考</a>
+    </div>
     <div class="mbtns">
       <button class="ic" id="openF" aria-controls="filters" aria-expanded="false">篩選</button>
       <button class="ic" id="openS" aria-controls="side" aria-expanded="false">統計</button>
@@ -309,7 +366,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="scrim" id="scrim"></div>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="pwrap">
   <main>
     <div id="stage"></div>
     <div class="nav" id="nav"></div>
@@ -322,6 +379,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <div class="stat"><span>已答</span><b id="sDone">0</b></div>
       <div class="stat"><span>答對</span><b id="sOk">0</b></div>
       <div class="stat"><span>答錯</span><b id="sNo">0</b></div>
+    </div>
+    <div class="panel">
+      <h4>記憶曲線</h4>
+      <div class="stat"><span>現在該複習</span><b id="sDue">0</b></div>
+      <div class="stat"><span>24 小時內到期</span><b id="sDue1">0</b></div>
+      <div class="bars" id="mem" style="margin-top:10px"></div>
+      <p class="empty" style="margin:10px 0 0">答錯 10 分鐘後再看一次，答對就依 1、3、7、16、35 天拉長間隔；再答錯就從頭開始。</p>
     </div>
     <div class="panel">
       <h4>跳題</h4>
@@ -364,21 +428,60 @@ function load(){
   return {tier:'short', ans:{}, wrong:{}, shuffle:false, onlywrong:false, idx:{}, theme:null, prevTier:null, reveal:false, hl:true, snap:false, dom:'all'};
 }
 function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
+if(!S.srs) S.srs={};
+if(!S.mode) S.mode='practice';
+// 頂部列的高度會隨換行改變，側欄的 sticky 位置跟著它
+function setBarH(){ const b=document.querySelector('body > .bar');
+  if(b&&b.offsetHeight) document.documentElement.style.setProperty('--barh',b.offsetHeight+'px'); }
+addEventListener('resize',setBarH); addEventListener('load',setBarH);
 
-/* ---- theme ---- */
+/* ---- 記憶曲線（間隔重複）----
+   每題有一個「盒子」等級：答錯回到 0（10 分鐘後再看），答對升一級，
+   依 1、3、7、16、35 天的間隔拉長，第 6 級視為熟記（90 天後抽查）。 */
+const SRS_DAYS=[0,1,3,7,16,35,90];
+const SRS_LABEL=['剛答錯','1 天','3 天','1 週','16 天','35 天','熟記'];
+const DAY=864e5;
+function srsGrade(n,res){
+  const cur=S.srs[n], now=Date.now();
+  let b;
+  if(res==='no') b=0;
+  else if(res==='guess') b=1;
+  else if(!cur) b=2;                         // 第一次就答對：3 天後再確認
+  else if(cur.d>now) b=Math.max(cur.b,1);    // 還沒到期就重做：不加速升級
+  else b=Math.min(cur.b+1,SRS_DAYS.length-1);
+  S.srs[n]={b,d:b===0?now+10*60000:now+SRS_DAYS[b]*DAY};
+}
+function dueList(t){
+  const now=t||Date.now();
+  return DATA.filter(q=>S.srs[q.n]&&S.srs[q.n].d<=now)
+    .sort((a,b)=>S.srs[a.n].d-S.srs[b.n].d);
+}
+function fmtIn(ms){
+  if(ms<=0) return '現在';
+  const m=Math.round(ms/60000); if(m<60) return m+' 分鐘後';
+  const h=Math.round(ms/36e5); if(h<36) return h+' 小時後';
+  return Math.round(ms/DAY)+' 天後';
+}
+
+/* ---- theme：淺色 → 護眼 → 深色 ---- */
+const THEMES=[['light','淺色'],['paper','護眼'],['dark','深色']];
 function applyTheme(){ if(S.theme) document.documentElement.setAttribute('data-theme',S.theme);
   else document.documentElement.removeAttribute('data-theme');
-  const dark = S.theme ? S.theme==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
-  document.getElementById('tc').setAttribute('content', dark?'#151F29':'#FFFFFF'); }
+  const cur = S.theme || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  document.getElementById('tc').setAttribute('content', {dark:'#151F29',paper:'#FBF6EA'}[cur]||'#FFFFFF');
+  document.getElementById('theme').textContent='主題 · '+THEMES.find(t=>t[0]===cur)[1]; }
 matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',()=>{ if(!S.theme) applyTheme(); });
 applyTheme();
 document.getElementById('theme').onclick=()=>{
   const cur=S.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-  S.theme = cur==='dark'?'light':'dark'; applyTheme(); save();
+  const i=THEMES.findIndex(t=>t[0]===cur);
+  S.theme=THEMES[(i+1)%THEMES.length][0]; applyTheme(); save();
 };
 
 /* ---- deck ---- */
+let R={};   // 這一輪記憶複習的作答（不覆蓋練習紀錄的顯示）
 function baseDeck(){
+  if(S.mode==='rev') return dueList();
   let d = S.tier==='all' ? DATA.slice() : DATA.filter(q=>q.t===S.tier);
   if(S.onlywrong) d = d.filter(q=>S.wrong[q.n]);
   if(S.snap) d = d.filter(q=>q.s);
@@ -393,7 +496,7 @@ let deck=[], pos=0, peek=false, expOpen=false;
 function key(){ return S.tier+':'+(S.dom||'all')+(S.onlywrong?':w':'')+(S.snap?':q':'')+(S.shuffle?':s':''); }
 function rebuild(keepNum){
   deck=baseDeck();
-  const want = keepNum ?? S.idx[key()];
+  const want = keepNum ?? (S.mode==='rev' ? undefined : S.idx[key()]);
   let i = deck.findIndex(q=>q.n===want);
   pos = i>=0 ? i : 0;
   peek=false; closeExp();
@@ -410,7 +513,18 @@ TIERS.forEach(t=>{
   b.onclick=()=>{ S.tier=t.k; save(); syncBar(); rebuild(); };
   b.dataset.k=t.k; tierBar.appendChild(b);
 });
+/* ---- 練習 / 記憶複習 切換 ---- */
+function setMode(m){
+  if(S.mode===m) return;
+  S.mode=m; R={}; save(); closeSheets(); rebuild(); window.scrollTo({top:0});
+}
+document.querySelectorAll('#modes [data-m]').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 function syncBar(){
+  document.body.classList.toggle('mode-rev',S.mode==='rev');
+  setBarH();
+  document.querySelectorAll('#modes [data-m]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===S.mode)));
+  const due=dueList().length;
+  document.getElementById('dueCt').textContent=due||'';
   [...tierBar.children].forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.k===S.tier)));
   document.getElementById('shuffle').setAttribute('aria-pressed',String(S.shuffle));
   document.getElementById('reveal').setAttribute('aria-pressed',String(!!S.reveal));
@@ -446,27 +560,44 @@ document.getElementById('onlywrong').onclick=()=>{
 /* ---- render ---- */
 const stage=document.getElementById('stage'), nav=document.getElementById('nav');
 const LET='ABCDEFGH';
+/* 這題目前的作答：複習模式用這一輪的作答，練習模式用練習紀錄 */
+function givenOf(q){ return S.mode==='rev' ? R[q.n] : S.ans[q.n]; }
+function isShown(q){ return givenOf(q)!==undefined || (S.mode!=='rev' && S.reveal) || peek; }
 function render(){
   syncBar();
   if(!deck.length){
-    stage.innerHTML=`<div class="card done"><div class="big">0</div>
-      <p class="empty" style="font-size:14px;margin-top:12px">${S.onlywrong?'目前沒有錯題。關掉「只練錯題」回到完整題庫。':(S.snap?'這一段沒有秒答題，換一段或關掉「秒答題」。':'這個範圍沒有題目，放寬長度或領域篩選。')}</p></div>`;
-    nav.innerHTML=''; stats(); return;
+    let msg;
+    if(S.mode==='rev'){
+      const all=Object.values(S.srs), next=all.length?Math.min(...all.map(x=>x.d)):0;
+      msg = all.length
+        ? `現在沒有到期的題目。下一批在 <b>${fmtIn(next-Date.now())}</b>，共 ${dueList(next).length} 題。`
+        : '還沒有複習紀錄。在練習或模擬考答過的題目，會依記憶曲線排進這裡。';
+      stage.innerHTML=`<div class="card done"><div class="big">0</div>
+        <p class="empty" style="font-size:14px;margin-top:12px">${msg}</p>
+        <button class="btn" style="margin-top:14px" onclick="setMode('practice')">回練習</button></div>`;
+    } else {
+      msg = S.onlywrong?'目前沒有錯題。關掉「只練錯題」回到完整題庫。':(S.snap?'這一段沒有秒答題，換一段或關掉「秒答題」。':'這個範圍沒有題目，放寬長度或領域篩選。');
+      stage.innerHTML=`<div class="card done"><div class="big">0</div>
+        <p class="empty" style="font-size:14px;margin-top:12px">${msg}</p></div>`;
+    }
+    nav.innerHTML=''; document.getElementById('mpos').textContent=S.mode==='rev'?'記憶複習 · 0':'';
+    document.getElementById('railfill').style.width='0'; stats(); return;
   }
   pos=Math.max(0,Math.min(pos,deck.length-1));
   const q=deck[pos];
-  S.idx[key()]=q.n; save();
-  const given=S.ans[q.n];
-  const answered=given!==undefined;
-  const shown=answered||S.reveal||peek;
+  if(S.mode!=='rev') S.idx[key()]=q.n;
+  save();
+  const given=givenOf(q);
+  const shown=isShown(q);
   const tl=TIERS.find(t=>t.k===q.t);
-  const c=document.createElement('div'); c.className='card';
+  const c=document.createElement('div'); c.className='card'; c.dataset.d=DMAP[q.n]||'';
   c.innerHTML=`
     <div class="meta">
       <span class="qno">Q${q.n}</span><span class="dot"></span>
       <span class="cat">${esc((DOMS.find(x=>x[0]===DMAP[q.n])||[,q.ce])[1])}<span class="ce"> · ${esc(q.ce)}</span></span><span class="dot"></span>
       <span class="gauge ${tl.g}" title="${tl.label}"><i></i><i></i><i></i></span>
       ${q.s?`<span class="snapbadge">${q.s==='tool'?'工具題':'名詞題'}</span>`:''}
+      ${S.srs[q.n]&&!shown?`<span class="srsbadge b${S.srs[q.n].b}" title="記憶曲線的等級">${SRS_LABEL[S.srs[q.n].b]}</span>`:''}
       <button class="flag" id="flag" data-on="${S.wrong[q.n]?1:0}">${S.wrong[q.n]?'已標記錯題':'標記錯題'}</button>
     </div>
     <div class="stem">${mark(q.q)}</div>
@@ -501,8 +632,11 @@ function render(){
 }
 /* answering only marks the options; the explanation waits for the 看解答 button */
 function pick(q,i){
+  const right=q.a.includes(i);
+  if(S.mode==='rev') R[q.n]=i;
   S.ans[q.n]=i;
-  if(!q.a.includes(i)) S.wrong[q.n]={c:domName(q.n)}; else delete S.wrong[q.n];
+  if(!right) S.wrong[q.n]={c:domName(q.n)}; else delete S.wrong[q.n];
+  srsGrade(q.n, right?'ok':'no');
   save(); render();
 }
 function showExp(q,given){
@@ -517,11 +651,18 @@ function showExp(q,given){
        + `<b>你選 ${LET[given]}${right?'':' · 正解 '+sol}</b></div>`;
   }
   const redo = given!==undefined ? `<button class="ic" id="redo">重做這題</button>` : '';
+  const sr=S.srs[q.n], right=given!==undefined&&q.a.includes(given);
+  const guess = right && sr && sr.b>1 ? `<button class="ic" id="guess" title="猜對的題目明天再考一次">其實是猜的</button>` : '';
+  const next = sr && given!==undefined
+    ? `<p class="srsline"><span class="srsbadge b${sr.b}">${SRS_LABEL[sr.b]}</span>下次複習：${fmtIn(sr.d-Date.now())}</p>` : '';
   el.innerHTML=`<div class="sheet-h"><b>詳解</b><button class="ic" data-close>關閉</button></div>`
-    + `<div class="vrow">${head}${redo}</div>`
+    + `<div class="vrow">${head}${guess}${redo}</div>${next}`
     + `<h3>詳解 &middot; 中文</h3><div class="body">${esc(q.e)}</div>`;
   if(redo) el.querySelector('#redo').onclick=()=>{
-    delete S.ans[q.n]; peek=false; closeExp(); render(); };
+    if(S.mode==='rev') delete R[q.n]; else delete S.ans[q.n];
+    peek=false; closeExp(); render(); };
+  if(guess) el.querySelector('#guess').onclick=()=>{
+    srsGrade(q.n,'guess'); save(); showExp(q,given); };
   el.classList.toggle('open',expOpen);
 }
 function openExp(){
@@ -543,7 +684,7 @@ function drawNav(){
   mk('上一題',()=>go(-1),'',pos===0);
   mk('下一題',()=>go(1),'pri',pos>=deck.length-1);
   const q=deck[pos];
-  const shown = S.ans[q.n]!==undefined || S.reveal || peek;
+  const shown = isShown(q);
   if(!shown) mk('看答案',()=>{peek=true;render();openExp();},'mid');
   else if(!expOpen) mk('看解答',openExp,'mid');
   else mk('收起解答',closeExp,'mid');
@@ -551,7 +692,7 @@ function drawNav(){
   k.innerHTML=`${pos+1} / ${deck.length}<em>A–H 作答　Enter 看解答／下一題　← → 換題</em>`;
   nav.appendChild(k);
   const tl=TIERS.find(t=>t.k===S.tier);
-  document.getElementById('mpos').textContent=`${tl?tl.label:''} · ${pos+1} / ${deck.length}`;
+  document.getElementById('mpos').textContent=`${S.mode==='rev'?'記憶複習':(tl?tl.label:'')} · ${pos+1} / ${deck.length}`;
   document.getElementById('railfill').style.width=((pos+1)/deck.length*100)+'%';
 }
 function stats(){
@@ -582,9 +723,20 @@ function stats(){
   else{ const max=arr[0][1];
     wk.innerHTML=arr.map(([c,v])=>`<div class="wk"><div class="l"><span>${esc(c)}</span><em>${v}</em></div>
       <div class="t"><i style="width:${v/max*100}%"></i></div></div>`).join(''); }
+  // 記憶曲線：各等級題數
+  const now=Date.now(), all=Object.values(S.srs);
+  document.getElementById('sDue').textContent=all.filter(x=>x.d<=now).length;
+  document.getElementById('sDue1').textContent=all.filter(x=>x.d>now&&x.d<=now+DAY).length;
+  const box=SRS_LABEL.map(()=>0); all.forEach(x=>box[x.b]++);
+  const bmax=Math.max(1,...box);
+  document.getElementById('mem').innerHTML = all.length
+    ? box.map((v,b)=>`<div class="wk"><div class="l"><span><span class="srsbadge b${b}">${SRS_LABEL[b]}</span></span><em>${v}</em></div>
+        <div class="t"><i class="mb${b}" style="width:${v/bmax*100}%"></i></div></div>`).join('')
+    : '<p class="empty">答過的題目會依記憶曲線排程，這裡顯示每個等級有幾題。</p>';
 }
 function goto(n){
   const q=DATA.find(x=>x.n===n); if(!q) return;
+  S.mode='practice';
   if(S.tier!=='all' && q.t!==S.tier){ S.tier=q.t; }
   if(S.onlywrong && !S.wrong[n]) S.onlywrong=false;
   closeSheets();
@@ -634,10 +786,13 @@ document.addEventListener('click',e=>{ if(e.target.closest('[data-close]')) clos
 document.getElementById('jgo').onclick=()=>{const v=parseInt(document.getElementById('jin').value,10); if(v)goto(v);};
 document.getElementById('jin').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=parseInt(e.target.value,10); if(v)goto(v);}});
 document.getElementById('reset').onclick=()=>{
-  S={tier:S.tier,ans:{},wrong:{},shuffle:S.shuffle,onlywrong:false,idx:{},theme:S.theme,prevTier:null};
+  S={tier:S.tier,ans:{},wrong:{},shuffle:S.shuffle,onlywrong:false,idx:{},theme:S.theme,prevTier:null,
+     hl:S.hl,srs:{},mode:'practice'};
+  R={};
   save(); rebuild();
 };
 addEventListener('keydown',e=>{
+  if(document.body.classList.contains('mode-exam')) return;
   if(e.key==='Escape'){ closeSheets(); return; }
   if(e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey) return;
   if(document.body.classList.contains('sheet-f')||document.body.classList.contains('sheet-s')) return;
@@ -646,16 +801,15 @@ addEventListener('keydown',e=>{
   if(e.key==='Enter'){
     e.preventDefault();
     const cur=deck[pos]; if(!cur) return;
-    const seen = S.ans[cur.n]!==undefined || S.reveal || peek;
+    const seen = isShown(cur);
     if(!seen){ peek=true; render(); openExp(); }
     else if(!expOpen) openExp();
     else go(1);
     return;
   }
-  if(S.reveal||peek) return;
   const i=LET.indexOf(e.key.toUpperCase());
   if(i>=0 && deck[pos]){ const q=deck[pos];
-    if(i<q.o.length && S.ans[q.n]===undefined){ e.preventDefault(); pick(q,i); } }
+    if(i<q.o.length && !isShown(q)){ e.preventDefault(); pick(q,i); } }
 });
 /* ---------- keyword highlighting ---------- */
 const DIR=["most likely","best describes this","best describes","most effective","most appropriate","most difficult","most accurately","most directly","most strongly","most plausible","most crucial","hardest to detect and mitigate","hardest to detect","best explains","best aligns with","best mitigates","best countermeasure","best represents","best matches","best fits","which of the following best","least appropriate","least useful","least likely","cannot","except","without","rather than","instead of","despite","regardless of","unless","however","immediately","prioritize","next step","primary objective","prior to","subsequently","due to","whereas","although"];
@@ -695,6 +849,8 @@ function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','
 document.getElementById('srcline').textContent=`312-50v13 · ${DATA.length} 題 · 英文原題 / 中文詳解`;
 rebuild();
 </script>
+<div id="examApp"></div>
+<script src="exam.js?v=1"></script>
 </body>
 
 </html>
