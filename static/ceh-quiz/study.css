@@ -1,0 +1,81 @@
+/* ===== 背題模式（study.js）===== */
+#studyApp{display:none}
+body.mode-study #studyApp{display:block}
+body.mode-study > .bar,body.mode-study #pwrap{display:none}
+
+/* side panel: sticky on desktop, bottom sheet on phones */
+.sside{display:flex;flex-direction:column;gap:14px;position:sticky;top:82px;
+  max-height:calc(100vh - 100px);overflow-y:auto;overscroll-behavior:contain;padding:2px 2px 4px}
+.sside > *{flex:none}
+.sside h4 .sgc{font-weight:400;letter-spacing:0;text-transform:none;margin-left:4px}
+.sside .chips{gap:6px}
+.sside .chip{padding:5px 11px;font-size:12.5px}
+.chip .dd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;
+  background:hsl(var(--dh) var(--ds) var(--dl))}
+.sgl{position:relative;display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto;overscroll-behavior:contain;margin:0 -6px}
+.sg{display:grid;grid-template-columns:auto 1fr auto;gap:3px 10px;align-items:baseline;width:100%;
+  text-align:left;padding:7px 8px;border-radius:7px;font-size:13px}
+.sg:hover{background:var(--surface-2)}
+.sg.cur{background:var(--accent-soft);color:var(--accent-ink)}
+.sg .n{font-weight:600}
+.sg .r{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.sg .p{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sg .t{grid-column:1/-1;height:3px;background:var(--sunk);border-radius:2px;overflow:hidden}
+.sg .t i{display:block;height:100%;background:var(--accent)}
+.sg.full .t i{background:var(--ok)}
+.stg{display:flex;flex-direction:column;gap:6px}
+.stg .ic{text-align:left}
+
+/* card: answer is shown straight away */
+.sans{display:flex;align-items:baseline;gap:10px;padding:11px 22px;background:var(--ok-soft);color:var(--ok);
+  border-bottom:1px solid var(--line-2);font-size:15px;line-height:1.55}
+.sans b{font-family:var(--mono);font-size:12.5px;font-weight:600;flex:none;letter-spacing:.02em}
+.sans span{font-weight:500;min-width:0}
+.scard{touch-action:pan-y;will-change:transform}
+.scard .opts{padding-bottom:12px}
+.scard .opt{cursor:default}
+.scard .opt.dim{opacity:.5}
+.shid{margin:-4px 22px 14px;font-size:12px;color:var(--muted)}
+.sx{border-top:1px solid var(--line-2);background:var(--surface-2)}
+.sx-t{display:flex;align-items:center;gap:10px;width:100%;padding:13px 22px;font-size:13.5px;
+  font-weight:500;color:var(--ink-2);text-align:left}
+.sx-t i{margin-left:auto;font-style:normal;color:var(--muted);transition:transform .2s}
+.sx.open .sx-t i{transform:rotate(180deg)}
+.sx-ans{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-soft);
+  border-radius:20px;padding:1px 10px}
+.sx-b{display:none;padding:0 22px 22px}
+.sx.open .sx-b{display:block}
+.sx-b .body{border-left:2px solid var(--accent);padding-left:16px;font-family:var(--serif);
+  color:var(--ink-2);font-size:15.5px;line-height:2;white-space:pre-wrap;text-wrap:pretty}
+@keyframes s-in-r{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@keyframes s-in-l{from{transform:translateX(-48px);opacity:0}to{transform:none;opacity:1}}
+.scard.in-r{animation:s-in-r .2s ease-out}
+.scard.in-l{animation:s-in-l .2s ease-out}
+.sdone h3{margin:14px 0 6px;font-size:18px}
+.sdone .empty{font-size:14px}
+.sendb{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+
+/* the 4-way mode switch: 記憶複習 shortens to 複習 on phones */
+@media (max-width:720px){
+  .modes .lg{display:none}
+  #studyApp .brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sside{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:50;max-height:85vh;
+    background:var(--surface);border-radius:16px 16px 0 0;box-shadow:0 -10px 40px -10px rgba(0,0,0,.35);
+    padding:0 16px calc(18px + env(safe-area-inset-bottom));
+    transform:translateY(105%);visibility:hidden;transition:transform .24s ease,visibility 0s linear .24s}
+  body.s-nav .sside{transform:none;visibility:visible;transition:transform .24s ease,visibility 0s}
+  .sside .panel{border-radius:10px}
+  .sside .chip{padding:7px 12px;font-size:13.5px}
+  .sgl{max-height:40vh}
+  .sg{padding:10px 10px;font-size:14px}
+  .stg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .stg .ic{padding:10px;font-size:14px;text-align:center}
+  body.s-nav .sscrim{opacity:1;pointer-events:auto}
+  body.s-nav{overflow:hidden}
+  .scard{min-height:calc(100vh - 170px)}
+  .shid{margin:-4px 18px 14px}
+  .sans{padding:11px 18px;font-size:16px}
+  .sx-t{padding:14px 18px;font-size:14.5px}
+  .sx-b{padding:0 18px 22px}
+  .sx-b .body{font-size:16px;line-height:1.95;padding-left:14px}
+}

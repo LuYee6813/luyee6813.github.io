@@ -259,7 +259,7 @@ body.mode-rev #openF.on::after{display:none}
   .brand b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bar > .bar-in{flex-wrap:wrap;row-gap:8px}
   .bar > .bar-in .brand{flex:1 1 0}
-  .modes{order:5;flex:1 1 100%;display:grid;grid-template-columns:repeat(3,1fr)}
+  .modes{order:5;flex:1 1 100%;display:grid;grid-template-columns:repeat(4,1fr)}
   .modes button,.modes a{padding:7px 6px;font-size:14px}
   .brand #srcline{display:none}
   .mpos{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);
@@ -332,6 +332,7 @@ body.mode-rev #openF.on::after{display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <link rel="stylesheet" href="exam.css?v=3">
+<link rel="stylesheet" href="study.css?v=1">
 </head>
 
 <body>
@@ -340,7 +341,8 @@ body.mode-rev #openF.on::after{display:none}
     <div class="brand"><b>CEH v13 分段題庫</b><span id="srcline">312-50v13 &middot; 797 題</span><span class="mpos" id="mpos"></span></div>
     <div class="modes" id="modes" role="group" aria-label="模式">
       <button data-m="practice" aria-pressed="true">練習</button>
-      <button data-m="rev" aria-pressed="false" title="依記憶曲線排出今天該複習的題目">記憶複習<span class="ct" id="dueCt"></span></button>
+      <button data-m="rev" aria-pressed="false" title="依記憶曲線排出今天該複習的題目"><span><span class="lg">記憶</span>複習</span><span class="ct" id="dueCt"></span></button>
+      <a href="#study" title="直接顯示正解與詳解，分組瀏覽，手機可左右滑">背題</a>
       <a href="#exam" title="依題庫組題，計時作答，交卷後計分">模擬考</a>
     </div>
     <div class="mbtns">
@@ -792,7 +794,7 @@ document.getElementById('reset').onclick=()=>{
   save(); rebuild();
 };
 addEventListener('keydown',e=>{
-  if(document.body.classList.contains('mode-exam')) return;
+  if(document.body.classList.contains('mode-exam')||document.body.classList.contains('mode-study')) return;
   if(e.key==='Escape'){ closeSheets(); return; }
   if(e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey) return;
   if(document.body.classList.contains('sheet-f')||document.body.classList.contains('sheet-s')) return;
@@ -851,6 +853,8 @@ rebuild();
 </script>
 <div id="examApp"></div>
 <script src="exam.js?v=3"></script>
+<div id="studyApp"></div>
+<script src="study.js?v=1"></script>
 </body>
 
 </html>
