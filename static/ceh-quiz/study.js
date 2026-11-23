@@ -4,8 +4,9 @@
 'use strict';
 const KLS='cehstudy_v1';
 const DOM_ORDER=['D1','D2','D3','D4','D5','D6','D7','D8','D9'];
+const TIER_KEYS=['short','mid','long'];
 const SIZES=[[10,'10 題'],[20,'20 題'],[30,'30 題'],[50,'50 題'],[0,'不分組']];
-const DEF={dom:'all',tier:'all',size:20,only:false,exp:false,rnd:false};
+const DEF={dom:'all',tiers:[],size:20,only:false,exp:false,rnd:false};   // tiers 空陣列＝全部長度
 
 let K=kload();
 function kload(){
@@ -13,6 +14,9 @@ function kload(){
     if(o&&o.seen) return {...DEF,at:{},pos:{},...o};}catch(e){}
   return {...DEF,at:{},pos:{},seen:{}};
 }
+// 舊版只存單一長度 K.tier，換成可複選的 K.tiers
+if(K.tier!==undefined){ if(K.tier!=='all') K.tiers=[K.tier]; delete K.tier; }
+if(!Array.isArray(K.tiers)) K.tiers=[];
 function ksave(){ try{localStorage.setItem(KLS,JSON.stringify(K));}catch(e){} }
 const $=id=>document.getElementById(id);
 const dlabel=c=>(DOMS.find(d=>d[0]===c)||[,'其他'])[1];
@@ -38,13 +42,13 @@ app.innerHTML=`
 
 /* ---------- 範圍與分組 ---------- */
 let G=[], gi=0, deck=[], pos=0, anim='';
-const scopeKey=()=>K.dom+'|'+K.tier+'|'+K.size;
+const scopeKey=()=>K.dom+'|'+(K.tiers.length?K.tiers.join('+'):'all')+'|'+K.size;
 const gkey=()=>scopeKey()+'|'+gi;
 function scope(){
   let d=DATA;
   if(K.dom==='wrong') d=d.filter(q=>S.wrong[q.n]);
   else if(K.dom!=='all') d=d.filter(q=>DMAP[q.n]===K.dom);
-  if(K.tier!=='all') d=d.filter(q=>q.t===K.tier);
+  if(K.tiers.length) d=d.filter(q=>K.tiers.includes(q.t));
   return d;
 }
 function build(){
@@ -85,7 +89,8 @@ function go(d){
 
 /* ---------- 題目卡 ---------- */
 function head(){
-  const sl = K.dom==='wrong'?'錯題本':K.dom==='all'?'全部':dlabel(K.dom);
+  const sl = (K.dom==='wrong'?'錯題本':K.dom==='all'?'全部':dlabel(K.dom))
+    + (K.tiers.length?' · '+K.tiers.map(k=>TIERS.find(t=>t.k===k).label).join('＋'):'');
   const len=deck.length;
   $('ssub').textContent = len
     ? `${sl} · 第 ${gi+1} / ${G.length} 組 · ${Math.min(pos+1,len)} / ${len}`
@@ -172,8 +177,11 @@ function drawSide(){
   const doms=[chip('dom','all','全部',DATA.length,K.dom==='all')]
     .concat(DOM_ORDER.map(c=>chip('dom',c,`<i class="dd"></i>${esc(dlabel(c))}`,(DOMQ[c]||[]).length,K.dom===c,` data-d="${c}"`)))
     .concat(chip('dom','wrong','錯題本',wn,K.dom==='wrong'));
-  const tiers=[chip('tier','all','全部長度',undefined,K.tier==='all')]
-    .concat(TIERS.filter(t=>t.k!=='all').map(t=>chip('tier',t.k,t.label,undefined,K.tier===t.k)));
+  // 長度的題數跟著目前選的領域算
+  const inDom = K.dom==='wrong'?DATA.filter(q=>S.wrong[q.n]):K.dom==='all'?DATA:DATA.filter(q=>DMAP[q.n]===K.dom);
+  const tiers=[chip('tier','all','全部長度',undefined,!K.tiers.length)]
+    .concat(TIER_KEYS.map(k=>{ const t=TIERS.find(x=>x.k===k);
+      return chip('tier',k,t.label,inDom.filter(q=>q.t===k).length,K.tiers.includes(k)); }));
   const sizes=SIZES.map(([v,l])=>chip('size',v,l,undefined,K.size===v));
   const seenAll=Object.keys(K.seen).length;
   const theme=($('theme')||{}).textContent||'主題';
@@ -235,7 +243,13 @@ app.addEventListener('click',e=>{
       if(S.wrong[q.n]) delete S.wrong[q.n]; else S.wrong[q.n]={c:domName(q.n)};
       save(); b.outerHTML=flagBtn(q); drawSide(); break;
     case 'dom': K.dom=v; ksave(); rescope(); break;
-    case 'tier': K.tier=v; ksave(); rescope(); break;
+    case 'tier':
+      // 長度可以複選；三種都選等於全部長度
+      if(v==='all') K.tiers=[];
+      else { const on=K.tiers.includes(v);
+        K.tiers = on ? K.tiers.filter(x=>x!==v) : TIER_KEYS.filter(x=>x===v||K.tiers.includes(x));
+        if(K.tiers.length===TIER_KEYS.length) K.tiers=[]; }
+      ksave(); rescope(); break;
     case 'size': K.size=+v; ksave(); rescope(); break;
     case 'grp':
       gi=+b.dataset.i; loadGroup(); ksave(); closeSheet();
