@@ -6,7 +6,7 @@ const KLS='cehstudy_v1';
 const DOM_ORDER=['D1','D2','D3','D4','D5','D6','D7','D8','D9'];
 const TIER_KEYS=['short','mid','long'];
 const SIZES=[[10,'10 題'],[20,'20 題'],[30,'30 題'],[50,'50 題'],[0,'不分組']];
-const DEF={dom:'all',tiers:[],size:20,only:false,exp:false,rnd:false};   // tiers 空陣列＝全部長度
+const DEF={dom:'all',tiers:[],size:20,only:false,exp:false,rnd:false,shuf:false,seed:1};   // tiers 空陣列＝全部長度
 
 let K=kload();
 function kload(){
@@ -42,13 +42,17 @@ app.innerHTML=`
 
 /* ---------- 範圍與分組 ---------- */
 let G=[], gi=0, deck=[], pos=0, anim='';
-const scopeKey=()=>K.dom+'|'+(K.tiers.length?K.tiers.join('+'):'all')+'|'+K.size;
+const scopeKey=()=>K.dom+'|'+(K.tiers.length?K.tiers.join('+'):'all')+'|'+K.size+(K.shuf?'|r'+K.seed:'');
 const gkey=()=>scopeKey()+'|'+gi;
 function scope(){
   let d=DATA;
   if(K.dom==='wrong') d=d.filter(q=>S.wrong[q.n]);
   else if(K.dom!=='all') d=d.filter(q=>DMAP[q.n]===K.dom);
   if(K.tiers.length) d=d.filter(q=>K.tiers.includes(q.t));
+  // 隨機：整個範圍先洗牌再分組，每組都是混在一起的題目；同一個 seed 洗出來的順序固定
+  if(K.shuf){ d=d.slice(); let seed=hash('shuf'+K.seed);
+    for(let i=d.length-1;i>0;i--){ seed=(seed*1103515245+12345)&0x7fffffff;
+      const j=seed%(i+1); [d[i],d[j]]=[d[j],d[i]]; } }
   return d;
 }
 function build(){
@@ -90,7 +94,8 @@ function go(d){
 /* ---------- 題目卡 ---------- */
 function head(){
   const sl = (K.dom==='wrong'?'錯題本':K.dom==='all'?'全部':dlabel(K.dom))
-    + (K.tiers.length?' · '+K.tiers.map(k=>TIERS.find(t=>t.k===k).label).join('＋'):'');
+    + (K.tiers.length?' · '+K.tiers.map(k=>TIERS.find(t=>t.k===k).label).join('＋'):'')
+    + (K.shuf?' · 隨機':'');
   const len=deck.length;
   $('ssub').textContent = len
     ? `${sl} · 第 ${gi+1} / ${G.length} 組 · ${Math.min(pos+1,len)} / ${len}`
@@ -187,7 +192,8 @@ function drawSide(){
   const theme=($('theme')||{}).textContent||'主題';
   s.innerHTML=`
     <div class="sheet-h"><b>組別與設定</b><button class="ic" data-sact="close">完成</button></div>
-    <div class="panel"><h4>範圍</h4><div class="chips">${doms.join('')}</div><div class="chips">${tiers.join('')}</div></div>
+    <div class="panel"><h4>範圍</h4><div class="chips">${doms.join('')}</div><div class="chips">${tiers.join('')}</div>
+      <div class="chips">${chip('shuf','0','依題號',undefined,!K.shuf)}${chip('shuf','1','隨機',undefined,K.shuf)}${K.shuf?'<button class="chip" data-sact="reshuf">重新洗牌</button>':''}</div></div>
     <div class="panel"><h4>每組題數</h4><div class="chips">${sizes.join('')}</div></div>
     <div class="panel"><h4>組別 <span class="sgc">${G.length} 組</span></h4>
       <div class="sgl" id="sgl">${G.length?G.map((g,i)=>rowHtml(g,i)).join(''):'<p class="empty">這個範圍沒有題目。</p>'}</div></div>
@@ -210,7 +216,7 @@ function rowHtml(g,i){
   const seen=g.filter(q=>K.seen[q.n]).length;
   const lo=Math.min(...g.map(q=>q.n)), hi=Math.max(...g.map(q=>q.n));
   return `<button class="sg${i===gi?' cur':''}${seen===g.length?' full':''}" data-sact="grp" data-i="${i}">
-    <span class="n">第 ${i+1} 組</span><span class="r">Q${lo}–${hi}</span><span class="p">${seen}/${g.length}</span>
+    <span class="n">第 ${i+1} 組</span><span class="r">${K.shuf?'隨機 '+g.length+' 題':`Q${lo}–${hi}`}</span><span class="p">${seen}/${g.length}</span>
     <span class="t"><i style="width:${seen/g.length*100}%"></i></span></button>`;
 }
 function syncRow(){
@@ -243,6 +249,12 @@ app.addEventListener('click',e=>{
       if(S.wrong[q.n]) delete S.wrong[q.n]; else S.wrong[q.n]={c:domName(q.n)};
       save(); b.outerHTML=flagBtn(q); drawSide(); break;
     case 'dom': K.dom=v; ksave(); rescope(); break;
+    case 'shuf': K.shuf=v==='1'; ksave(); rescope(); break;
+    case 'reshuf': {
+      // 換一個 seed 重新洗；舊順序的進度用不到了，一併清掉
+      const old='|r'+K.seed;
+      for(const m of [K.at,K.pos]) for(const k of Object.keys(m)) if(k.endsWith(old)||k.includes(old+'|')) delete m[k];
+      K.seed=(K.seed%1e6)+1+Math.floor(Math.random()*1e5); ksave(); rescope(); break; }
     case 'tier':
       // 長度可以複選；三種都選等於全部長度
       if(v==='all') K.tiers=[];
